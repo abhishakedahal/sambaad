@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "212800799431",
+    "project_id": "chatappsambaad",
+    "storage_bucket": "chatappsambaad.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:212800799431:android:39df85d5541c2ddcb2f4e2",
+        "android_client_info": {
+          "package_name": "com.example.flutter_practise"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "212800799431-1u4ci3rb5jlv8blirvj6o3vua7c6cc88.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.flutter_practise",
+            "certificate_hash": "c994194667e7154bc52c33bf62c3147f3c675a73"
+          }
+        },
+        {
+          "client_id": "212800799431-15t4d2olqso7cuciqplsip7jpp6aqn6l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwnBWPTWAUQNILMQkIcy8At4Wc6Ex__hs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "212800799431-15t4d2olqso7cuciqplsip7jpp6aqn6l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
