@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1084881602704",
+    "project_id": "sambaad-a40f5",
+    "storage_bucket": "sambaad-a40f5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1084881602704:android:b5d006b5d017ba7a80b015",
+        "android_client_info": {
+          "package_name": "com.example.sambaad"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1084881602704-j7lunfij01o3piaa9s22stml552ic7cn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.sambaad",
+            "certificate_hash": "039b2cc686640512a8ae469887752cb015020a7e"
+          }
+        },
+        {
+          "client_id": "1084881602704-68k4uen7ap2vduifqo1kfiuq5gqs394h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjp5WdhklWbmgbix8PIKAVinuyvXrcIV4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1084881602704-68k4uen7ap2vduifqo1kfiuq5gqs394h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
