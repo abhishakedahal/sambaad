@@ -51,7 +51,7 @@ class _LoginPageState extends State<LoginPage> {
                                 color: Color(0xff075E54))),
                         const SizedBox(height: 10),
                         const Text(
-                            "Log in now and bring the world closer together, one conversation at a time",
+                            "Log in and start conversing instantly! No barriers, no limits!",  
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontSize: 15,
