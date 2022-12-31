@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_practise/shared/constants.dart';
 import 'package:flutter_practise/widgets/widgets.dart';
@@ -19,9 +20,16 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // appBar: AppBar(
+      //   title: const Text("संवाद"),
+      //   centerTitle: true,
+      //   elevation: 0,
+      //   backgroundColor: Color(0xff075E54),
+      // ),
+
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 50),
           child: Form(
               key: formKey,
               child: Column(
@@ -29,8 +37,10 @@ class _LoginPageState extends State<LoginPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   const Text("संवाद",
-                      style:
-                          TextStyle(fontSize: 50, fontWeight: FontWeight.bold)),
+                      style: TextStyle(
+                          fontSize: 50,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xff075E54))),
                   const SizedBox(height: 10),
                   const Text(
                       "Bringing the world closer together, one conversation at a time",
@@ -50,21 +60,28 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     onChanged: (val) {
                       setState(() {
-                         email=val;
-                    });
+                        email = val;
+                      });
                     },
 
-                  
-
+                    //check the email is valid or not
+                    validator: (val) {
+                      return RegExp(
+                                  r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                              .hasMatch(val!)
+                          ? null
+                          : "Please enter a valid email";
+                    },
                   ),
-                  
                   const SizedBox(height: 15),
                   TextFormField(
                     obscureText: _obscureText,
                     decoration: textInputDecoration.copyWith(
                       labelText: 'Password',
-                      prefixIcon: const Icon(Icons.lock, color: Color(0xff075E54)),
-                      suffixIcon: IconButton(color: const Color(0xff075E54),
+                      prefixIcon:
+                          const Icon(Icons.lock, color: Color(0xff075E54)),
+                      suffixIcon: IconButton(
+                        color: const Color(0xff075E54),
                         icon: Icon(_obscureText
                             ? Icons.visibility_off
                             : Icons.visibility),
@@ -75,16 +92,69 @@ class _LoginPageState extends State<LoginPage> {
                         },
                       ),
                     ),
+
+                    //check the password is valid or not
+                    validator: (val) {
+                      return val!.length < 6
+                          ? "Password must be 6+ characters"
+                          : null;
+                    },
+
                     onChanged: (val) {
                       setState(() {
-                         password=val;
-                    });
+                        password = val;
+                      });
                     },
-                  )
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          primary: Theme.of(context).primaryColor,
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10))),
+                      child: const Padding(
+                        padding: EdgeInsets.all(15.0),
+                        child: Text(
+                          "Sign In",
+                          style: TextStyle(color: Colors.white, fontSize: 16),
+                        ),
+                      ),
+                      onPressed: () {
+                        login();
+                      },
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Text.rich(TextSpan(
+                    text: "Don't have an account? ",
+                    style: const TextStyle(color: Colors.black, fontSize: 14),
+                    children: <TextSpan>[
+                      TextSpan(
+                          text: "Register here",
+                          style: const TextStyle(
+                              color: Colors.black,
+                              decoration: TextDecoration.underline),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              // nextScreen(context, const RegisterPage());
+                            }),
+                    ],
+                  )),
                 ],
               )),
         ),
       ),
     );
+  }
+
+  login() {
+    if (formKey.currentState!.validate()) {}
   }
 }
