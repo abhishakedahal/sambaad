@@ -1,8 +1,10 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_practise/helper/helper_function.dart';
 import 'package:flutter_practise/service/auth_service.dart';
 
 import '../../widgets/widgets.dart';
+import '../home_page.dart';
 import 'login_page.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -183,19 +185,20 @@ class _RegisterPageState extends State<RegisterPage> {
       });
       await authService
           .registerUserWithEmailandPassword(fullName, email, password)
-          .then((value) => {
-                if (value == true)
-                  {
-                    //saving the shared preferences state
-                  }
-                else
-                  {
-                    showSnackbar(context, Colors.red, value),
-                    setState(() {
-                      _isLoading = false;
-                    })
-                  }
-              });
+          .then((value) async {
+        if (value == true) {
+          //saving the shared preferences state
+          await HelperFunction.saveUserLoggedInStatus(true);
+          await HelperFunction.saveUserEmailSF(email);
+          await HelperFunction.saveUserNameSF(fullName);
+          nextScreenReplace(context, const HomePage());
+        } else {
+          showSnackbar(context, Colors.red, value);
+          setState(() {
+            _isLoading = false;
+          });
+        }
+      });
     }
   }
 }
