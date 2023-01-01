@@ -1,6 +1,5 @@
-**This project is still in developmet**
+***This project is still in developmet. Keep checking back for more updates***
 
-**Keep checking back for more updates**
 # sambaad
 
 A new Flutter project.
