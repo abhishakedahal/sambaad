@@ -28,8 +28,15 @@ class _RegisterPageState extends State<RegisterPage> {
     return Scaffold(
       body: _isLoading
           ? Center(
-              child: CircularProgressIndicator(
-                  color: Theme.of(context).primaryColor))
+              child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                CircularProgressIndicator(
+                    color: Theme.of(context).primaryColor),
+                const Text("Registering..."),
+              ],
+            ))
           : SingleChildScrollView(
               child: Padding(
                 padding:

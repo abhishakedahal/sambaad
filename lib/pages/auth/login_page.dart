@@ -31,8 +31,15 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       body: _isLoading
           ? Center(
-              child: CircularProgressIndicator(
-                  color: Theme.of(context).primaryColor),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator(
+                      color: Theme.of(context).primaryColor),
+                  const Text("Logging in..."),
+                ],
+              ),
             )
           : SingleChildScrollView(
               child: Padding(
@@ -51,7 +58,7 @@ class _LoginPageState extends State<LoginPage> {
                                 color: Color(0xff075E54))),
                         const SizedBox(height: 10),
                         const Text(
-                            "Log in and start conversing instantly! No barriers, no limits!",  
+                            "Log in and start conversing instantly! No barriers, no limits!",
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontSize: 15,
