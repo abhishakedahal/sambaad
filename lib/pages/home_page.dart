@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sambaad/helper/helper_function.dart';
+import 'package:sambaad/pages/profile_page.dart';
 import 'package:sambaad/pages/search_page.dart';
 import 'package:sambaad/service/auth_service.dart';
 import '../widgets/widgets.dart';
@@ -45,7 +46,7 @@ class _HomePageState extends State<HomePage> {
           actions: [
             IconButton(
                 onPressed: () {
-                  nextScreen(context, const SearchPage());
+                  nextScreenReplace(context, const SearchPage());
                 },
                 icon: const Icon(Icons.search))
           ],
@@ -77,32 +78,35 @@ class _HomePageState extends State<HomePage> {
                     )),
                 const SizedBox(height: 30),
                 const Divider(
-                  height: 30,
+                  height: 0,
                   thickness: 1,
                 ),
                 ListTileTheme(
                   child: Column(
                     children: [
                       ListTile(
-                        selectedColor: Color(0xff075E54),
                         selected: true,
+                        selectedTileColor: Color(0xff075E54),
                         contentPadding: const EdgeInsets.symmetric(
                             horizontal: 20, vertical: 10),
                         leading: const Icon(
                           Icons.group,
+                          color: Colors.white,
                         ),
                         title: const Text("Groups",
                             style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xff075E54))),
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            )),
                         onTap: () {
-                          Navigator.pop(context);
+                          nextScreen(context, const HomePage());
                         },
                       ),
                       ListTile(
                         leading: const Icon(
                           Icons.person,
+                          color: Color(0xff075E54),
                         ),
                         title: const Text("Profile",
                             style: TextStyle(
@@ -110,13 +114,20 @@ class _HomePageState extends State<HomePage> {
                                 fontWeight: FontWeight.bold,
                                 color: Color(0xff075E54))),
                         onTap: () {
-                          Navigator.pop(context);
+                          // go to profile page
+                          nextScreen(
+                              context,
+                              ProfilePage(
+                                userName: userName,
+                                email: email,
+                              ));
                         },
                       ),
                       const SizedBox(height: 10),
                       ListTile(
                         leading: const Icon(
                           Icons.logout,
+                          color: Color(0xff075E54),
                         ),
                         title: const Text("Logout",
                             style: TextStyle(
@@ -124,8 +135,39 @@ class _HomePageState extends State<HomePage> {
                                 fontWeight: FontWeight.bold,
                                 color: Color(0xff075E54))),
                         onTap: () async {
-                          authService.signOut().whenComplete(() =>
-                              nextScreenReplace(context, const LoginPage()));
+                          showDialog(
+                              barrierDismissible: false,
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: const Text("Logout"),
+                                  content: const Text(
+                                      "Are you sure you want to logout?"),
+                                  actions: [
+                                    IconButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      icon: const Icon(Icons.cancel,
+                                          color:
+                                              Color.fromARGB(255, 182, 28, 28)),
+                                    ),
+                                    IconButton(
+                                      icon: const Icon(Icons.check,
+                                          color: Color(0xff075e54)),
+                                      onPressed: () async {
+                                        await authService.signOut();
+                                        Navigator.of(context)
+                                            .pushAndRemoveUntil(
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        const LoginPage()),
+                                                (route) => false);
+                                      },
+                                    ),
+                                  ],
+                                );
+                              });
                         },
                       ),
                     ],
