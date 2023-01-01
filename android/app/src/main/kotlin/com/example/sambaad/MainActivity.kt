@@ -1,4 +1,4 @@
-package com.example.flutter_practise
+package com.example.sambaad
 
 import io.flutter.embedding.android.FlutterActivity
 

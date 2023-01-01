@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_practise/shared/constants.dart';
+import 'package:sambaad/shared/constants.dart';
 
 const textInputDecoration = InputDecoration(
     labelStyle: TextStyle(
@@ -27,16 +27,14 @@ void nextScreenReplace(context, page) {
 
 void showSnackbar(context, color, message) {
   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-    backgroundColor: color,
-    content: Text(message, style: const TextStyle(fontSize: 14)),
-    duration: const Duration(seconds: 10),
-    action: SnackBarAction(
-      label: 'Ok',
-      textColor: Colors.white,
-      onPressed: () {
-        ScaffoldMessenger.of(context).hideCurrentSnackBar();
-      },
-    )
-  ));
+      backgroundColor: color,
+      content: Text(message, style: const TextStyle(fontSize: 14)),
+      duration: const Duration(seconds: 10),
+      action: SnackBarAction(
+        label: 'Ok',
+        textColor: Colors.white,
+        onPressed: () {
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        },
+      )));
 }
-

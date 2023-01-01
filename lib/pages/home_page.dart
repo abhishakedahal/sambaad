@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_practise/helper/helper_function.dart';
-import 'package:flutter_practise/pages/search_page.dart';
-import 'package:flutter_practise/service/auth_service.dart';
+import 'package:sambaad/helper/helper_function.dart';
+import 'package:sambaad/pages/search_page.dart';
+import 'package:sambaad/service/auth_service.dart';
 import '../widgets/widgets.dart';
 import 'auth/login_page.dart';
 
@@ -124,8 +124,8 @@ class _HomePageState extends State<HomePage> {
                                 fontWeight: FontWeight.bold,
                                 color: Color(0xff075E54))),
                         onTap: () async {
-                          authService.signOut().whenComplete(
-                              () => nextScreenReplace(context, const LoginPage()));
+                          authService.signOut().whenComplete(() =>
+                              nextScreenReplace(context, const LoginPage()));
                         },
                       ),
                     ],

@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 //import foundation
 import 'package:flutter/foundation.dart';
-import 'package:flutter_practise/pages/home_page.dart';
-import 'package:flutter_practise/shared/constants.dart';
-import 'package:flutter_practise/helper/helper_function.dart';
-import 'package:flutter_practise/pages/auth/login_page.dart';
+import 'package:sambaad/pages/home_page.dart';
+import 'package:sambaad/shared/constants.dart';
+import 'package:sambaad/helper/helper_function.dart';
+import 'package:sambaad/pages/auth/login_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

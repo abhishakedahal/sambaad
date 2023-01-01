@@ -1,7 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_practise/helper/helper_function.dart';
-import 'package:flutter_practise/service/auth_service.dart';
+import 'package:sambaad/helper/helper_function.dart';
+import 'package:sambaad/service/auth_service.dart';
 
 import '../../widgets/widgets.dart';
 import '../home_page.dart';

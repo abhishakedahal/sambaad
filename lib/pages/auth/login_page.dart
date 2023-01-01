@@ -2,10 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_practise/pages/auth/register_page.dart';
-import 'package:flutter_practise/service/auth_service.dart';
-import 'package:flutter_practise/service/database_service.dart';
-import 'package:flutter_practise/widgets/widgets.dart';
+import 'package:sambaad/pages/auth/register_page.dart';
+import 'package:sambaad/service/auth_service.dart';
+import 'package:sambaad/service/database_service.dart';
+import 'package:sambaad/widgets/widgets.dart';
 import '../../helper/helper_function.dart';
 import '../home_page.dart';
 
