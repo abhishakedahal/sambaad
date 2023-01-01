@@ -2,8 +2,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:sambaad/helper/helper_function.dart';
-import 'package:sambaad/pages/homepage.dart';
-import 'package:sambaad/pages/loginpage.dart';
+import 'package:sambaad/pages/home_page.dart';
+import 'package:sambaad/pages/login_page.dart';
 import 'package:sambaad/shared/constants.dart';
 
 void main() async{
@@ -41,7 +41,9 @@ class _MyAppState extends State<MyApp> {
   getUserLoggedInStatus() async{
     await HelperFunction.getUserLoggedInstatus().then((value) {
       if(value!=null){
-        _isSignedIn=value;
+        setState(() {
+          _isSignedIn=value;
+        });
       }
     });
   }
@@ -49,6 +51,10 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        primaryColor: Constants().primaryColor,
+        scaffoldBackgroundColor: Colors.white,
+      ),
       debugShowCheckedModeBanner:false,
       home:_isSignedIn?const HomePage():const LoginPage(),
       
