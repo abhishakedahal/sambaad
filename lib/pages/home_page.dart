@@ -16,25 +16,25 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       //body: Center(child: Text("Home Page")),
-    //  appBar: AppBar(
-    //   actions: [
-    //     IconButton(onPressed: (){
-    //       nextScreen(context,const Searchpage());
-    //     }, icon: const Icon(
-    //       Icons.search,
-    //     ))
-    //   ],
-    //   elevation: 0,
-    //   centerTitle: true,
-    //   backgroundColor: Theme.of(context).primaryColor,
-    //   title: Text("संवाद",style:TextStyle(color:Colors.white,fontWeight: FontWeight.bold,fontSize: 27) ,),
-    //  ),
-    //  drawer: Drawer(
-    //   child: ListView(
-    //     padding: const EdgeInsets.symmetric(vertical:50),
+     appBar: AppBar(
+      actions: [
+        IconButton(onPressed: (){
+          nextScreen(context,const Searchpage());
+        }, icon: const Icon(
+          Icons.search,
+        ))
+      ],
+      elevation: 0,
+      centerTitle: true,
+      backgroundColor: Theme.of(context).primaryColor,
+      title: Text("संवाद",style:TextStyle(color:Colors.white,fontWeight: FontWeight.bold,fontSize: 27) ,),
+     ),
+     drawer: Drawer(
+      child: ListView(
+        padding: const EdgeInsets.symmetric(vertical:50),
 
-    //   ),
-    //  ),
+      ),
+     ),
     );
   }
 }
