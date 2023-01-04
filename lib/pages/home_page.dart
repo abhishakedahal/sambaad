@@ -117,7 +117,7 @@ class _HomePageState extends State<HomePage> {
             contentPadding: const EdgeInsets.symmetric(horizontal: 20,vertical: 5),
             leading: const Icon(Icons.group),
             title: const Text(
-              "Groups",style: TextStyle(color: Colors.black),
+              "Friends",style: TextStyle(color: Colors.black),
             ),
           ),
 
@@ -127,7 +127,7 @@ class _HomePageState extends State<HomePage> {
               nextScreenReplace(context, ProfilePage(userName: userName,email: email,));
             },
             contentPadding: const EdgeInsets.symmetric(horizontal: 20,vertical: 5),
-            leading: const Icon(Icons.group),
+            leading: const Icon(Icons.person),
             title: const Text(
               "Profile",style: TextStyle(color: Colors.black),
             ),
@@ -145,15 +145,7 @@ class _HomePageState extends State<HomePage> {
                       title: const Text("Logout"),
                       content: const Text("Are you sure you want to logout?"),
                       actions: [
-                        IconButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          icon: const Icon(
-                            Icons.cancel,
-                            color: Colors.red,
-                          ),
-                        ),
+                       
                         IconButton(
                           onPressed: () async {
                             await authService.signout();
@@ -165,6 +157,15 @@ class _HomePageState extends State<HomePage> {
                           icon: const Icon(
                             Icons.done,
                             color: Colors.green,
+                          ),
+                        ),
+                         IconButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: const Icon(
+                            Icons.cancel,
+                            color: Colors.red,
                           ),
                         ),
                       ],

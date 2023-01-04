@@ -31,11 +31,11 @@ class _LoginPageState extends State<LoginPage> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
       ),
-     // body: Center(child: Text("login page")),
+    // body: Center(child: Text("login page")),
 
      body:_isLoading?Center(child: CircularProgressIndicator(color:Theme.of(context).primaryColor),):SingleChildScrollView(
         child:Padding(
-          padding:const EdgeInsets.symmetric(horizontal: 20,vertical: 40) ,
+          padding:const EdgeInsets.symmetric(horizontal: 20,vertical: 10) ,
           child: Form(
               key: formKey,
               child: Column(
@@ -46,11 +46,12 @@ class _LoginPageState extends State<LoginPage> {
                       "संवाद",
                       style: TextStyle(fontSize: 40,fontWeight: FontWeight.bold)
                     ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 5),
                       const Text("Log in and start conversing instantly! No barriers, no limits!",
                         style: TextStyle(fontSize:15,fontWeight:FontWeight.w400)),
-                      Image.asset("assets/main.png"),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 20),
+                      Image.asset("assets/main1.png"),
+                      const SizedBox(height:10),
                       TextFormField(
                         decoration: textInputDecoration.copyWith(
                           labelText: "Email",
@@ -72,7 +73,7 @@ class _LoginPageState extends State<LoginPage> {
                         },
                       ),
 
-                      const SizedBox(height: 15),
+                      const SizedBox(height: 10),
 
                       TextFormField(
                         obscureText: true,
@@ -101,7 +102,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     
                     const SizedBox(
-                      height: 20,
+                      height: 10,
                     ),
                     SizedBox(
                       width: double.infinity,
@@ -124,12 +125,12 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     const SizedBox(height: 10 ),
                     Text.rich(TextSpan(
-                      text: "Don't have Account?",
+                      text: "Don't have Account?  ",
                       style: const TextStyle(color: Colors.black,fontSize: 14),
                       children: <TextSpan>[
                         TextSpan(
                           text:"Register here",
-                          style: const TextStyle(color: Colors.black,decoration: TextDecoration.underline),
+                          style: const TextStyle(color: Color.fromARGB(255, 6, 68, 161),decoration: TextDecoration.underline,fontWeight:FontWeight.bold),
                           recognizer: TapGestureRecognizer()..onTap=(){
                             nextScreen(context, const RegisterPage());
                           }

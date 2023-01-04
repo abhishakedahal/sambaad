@@ -27,6 +27,7 @@ class _ProfilePageState extends State<ProfilePage> {
               color: Colors.white, fontSize: 27, fontWeight: FontWeight.bold),
         ),
       ),
+
       drawer: Drawer(
           child: ListView(
         padding: const EdgeInsets.symmetric(vertical: 50),
@@ -121,13 +122,13 @@ class _ProfilePageState extends State<ProfilePage> {
         ],
       )),
       body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 170),
+        padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 50),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Icon(
               Icons.account_circle,
-              size: 200,
+              size: 150,
               color: Colors.grey[700],
             ),
             const SizedBox(

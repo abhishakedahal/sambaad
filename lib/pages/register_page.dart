@@ -32,7 +32,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
      body: _isLoading?Center (child:CircularProgressIndicator(color: Theme.of(context).primaryColor)):SingleChildScrollView(
         child:Padding(
-          padding:const EdgeInsets.symmetric(horizontal: 20,vertical: 40) ,
+          padding:const EdgeInsets.symmetric(horizontal: 20,vertical: 10) ,
           child: Form(
               key: formKey,
               child: Column(
@@ -43,11 +43,12 @@ class _RegisterPageState extends State<RegisterPage> {
                       "संवाद",
                       style: TextStyle(fontSize: 40,fontWeight: FontWeight.w400)
                     ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 5),
                       const Text("Create your account now to see what people are talking about!",
                         style: TextStyle(fontSize:15,fontWeight:FontWeight.w400)),
-                      Image.asset("assets/main.png"),
-                      const SizedBox(height: 10),
+                        const SizedBox(height:20),
+                      Image.asset("assets/main1.png"),
+                      const SizedBox(height: 5),
                       TextFormField(
                         decoration: textInputDecoration.copyWith(
                           labelText: "FullName",
@@ -150,12 +151,12 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                     const SizedBox(height: 10, ),
                     Text.rich(TextSpan(
-                      text: "Already have an account?",
+                      text: "Already have an account?  ",
                       style: const TextStyle(color: Colors.black,fontSize: 14),
                       children: <TextSpan>[
                         TextSpan(
                           text:"Login Now",
-                          style: const TextStyle(color: Colors.black,decoration: TextDecoration.underline),
+                          style: const TextStyle(color: Color.fromARGB(255, 6, 68, 161),decoration: TextDecoration.underline,fontWeight:FontWeight.bold),
                           recognizer: TapGestureRecognizer()..onTap=(){
                             nextScreen(context, const LoginPage());
                           }

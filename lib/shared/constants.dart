@@ -6,5 +6,6 @@ class Constants{
   static String messagingSenderId="1084881602704";
   static String projectId="sambaad-a40f5";
   //final primaryColor=const Color(0xFFee7b64);
-  final primaryColor=const Color(0xff075E54);
+  //final primaryColor=const Color(0xff075E54);
+  final primaryColor=Color.fromARGB(255, 50, 155, 253);
 }
