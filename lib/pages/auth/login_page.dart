@@ -8,6 +8,7 @@ import 'package:sambaad/service/database_service.dart';
 import 'package:sambaad/widgets/widgets.dart';
 import '../../helper/helper_function.dart';
 import '../home_page.dart';
+import 'forgot_password.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -161,6 +162,22 @@ class _LoginPageState extends State<LoginPage> {
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {
                                     nextScreen(context, const RegisterPage());
+                                  }),
+                          ],
+                        )),
+                        Text.rich(TextSpan(
+                          text: "Forgot Your Password? ",
+                          style: const TextStyle(
+                              color: Colors.black, fontSize: 14),
+                          children: <TextSpan>[
+                            TextSpan(
+                                text: "Reset Password",
+                                style: const TextStyle(
+                                    color: Colors.black,
+                                    decoration: TextDecoration.underline),
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () {
+                                    nextScreen(context, ForgotPasswordScreen());
                                   }),
                           ],
                         )),
