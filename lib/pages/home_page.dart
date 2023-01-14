@@ -6,8 +6,8 @@ import 'package:sambaad/pages/search_page.dart';
 import 'package:sambaad/service/auth_service.dart';
 import 'package:sambaad/service/database_service.dart';
 import 'package:sambaad/widgets/group_tile.dart';
-import '../widgets/widgets.dart';
-import 'auth/login_page.dart';
+import 'package:sambaad/widgets/widgets.dart';
+import 'package:sambaad/pages/auth/login_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -310,7 +310,7 @@ class _HomePageState extends State<HomePage> {
               return ListView.builder(
                 itemCount: snapshot.data['groups'].length,
                 itemBuilder: (BuildContext context, int index) {
-                    int reverseIndex =  snapshot.data['groups'].length - index - 1;
+                  int reverseIndex = snapshot.data['groups'].length - index - 1;
                   return GroupTile(
                       groupId: getId(snapshot.data['groups'][reverseIndex]),
                       groupName: getName(snapshot.data['groups'][reverseIndex]),
