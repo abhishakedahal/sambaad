@@ -20,10 +20,11 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).primaryColor,
         title: Text(widget.groupName),
       ),
-      body: const Center(
-        child: Text("Chat Page"),
+      body: Center(
+        child: Text("${widget.userName} ${widget.groupId}"),
       ),
     );
   }
