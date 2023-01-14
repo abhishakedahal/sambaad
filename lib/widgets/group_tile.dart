@@ -19,20 +19,43 @@ class GroupTile extends StatefulWidget {
 class _GroupTileState extends State<GroupTile> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 16),
-        child: ListTile(
-          leading: CircleAvatar(
-            radius: 25,
-            backgroundColor: Color(0xff075E54),
-            child: Text(
-              widget.groupName.substring(0, 1).toUpperCase(),
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 20,
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(context, "/group", arguments: {
+          "groupId": widget.groupId,
+          "groupName": widget.groupName,
+          "userName": widget.userName,
+        });
+      },
+      child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 16),
+          child: ListTile(
+            leading: CircleAvatar(
+              radius: 25,
+              backgroundColor: Color(0xff075E54),
+              child: Text(
+                widget.groupName.substring(0, 1).toUpperCase(),
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                ),
               ),
             ),
-          ),
-        )); 
+            title: Text(
+              widget.groupName,
+              style: const TextStyle(
+                color: Color(0xff075E54),
+                fontSize: 18,
+              ),
+            ),
+            subtitle: Text(
+              "Created by ${widget.userName}",
+              style: const TextStyle(
+                color: Color.fromARGB(255, 144, 161, 159),
+                fontSize: 14,
+              ),
+            ),
+          )),
+    );
   }
 }
