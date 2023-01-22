@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../service/database_service.dart';
+import 'package:sambaad/service/database_service.dart';
 
 class GroupInfo extends StatefulWidget {
   final String groupId;
@@ -46,11 +45,7 @@ class _GroupInfoState extends State<GroupInfo> {
         backgroundColor: Theme.of(context).primaryColor,
         title: Text(widget.groupName),
         actions: [
-          IconButton(onPressed: () {
-            
-            DatabaseService().leaveGroup(widget.groupId, widget.adminName);
-            Navigator.pop(context);
-          }, icon: const Icon(Icons.exit_to_app))
+          IconButton(onPressed: () {}, icon: const Icon(Icons.exit_to_app))
         ],
       ),
       body: Container(

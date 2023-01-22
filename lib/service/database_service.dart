@@ -41,7 +41,7 @@ class DatabaseService {
       "groupIcon": "",
       "admin": "${id}_$userName",
       "members": [],
-      "groupid": "",
+      "groupId": "",
       "recentMessage": "",
       "recentMessageSender": "",
       "recentMessageTime": "",
@@ -50,7 +50,7 @@ class DatabaseService {
     //updating the group id and members
     await groupdocumentReference.update({
       "members": FieldValue.arrayUnion(["${uid}_$userName"]),
-      "groupid": groupdocumentReference.id,
+      "groupId": groupdocumentReference.id,
     });
 
     DocumentReference userDocumentReference = usersCollection.doc(uid);
@@ -80,15 +80,21 @@ class DatabaseService {
     return documentSnapshot['members'];
   }
 
-  void leaveGroup(String groupId, String adminName) {
-    DocumentReference d = groupCollection.doc(groupId);
-    d.update({
-      "members": FieldValue.arrayRemove(["${uid}_$adminName"]),
-    });
-    DocumentReference userDocumentReference = usersCollection.doc(uid);
-    userDocumentReference.update({
-      "groups": FieldValue.arrayRemove(["${groupId}_$adminName"]),
-    });
+  // search for group
+  searchByName( String groupName) {
+    return groupCollection.where("groupName",isEqualTo: groupName).get();
+  }
+
+  Future<bool> isUserjoined(String groupName, String groupId, String userName) async {
+    DocumentReference userDocumentReference = groupCollection.doc(uid);
+    DocumentSnapshot documentSnapshot = await userDocumentReference.get();
+    List members = documentSnapshot['members'];
+    String member = "${uid}_$userName";
+    if(members.contains(member)){
+      return true;
+    }else{
+      return false;
+    }
   }
 
 }
