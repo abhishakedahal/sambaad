@@ -35,6 +35,9 @@ class _GroupInfoState extends State<GroupInfo> {
   String getName(String r) {
     return r.substring(r.indexOf("_") + 1);
   }
+  String getId(String r) {
+    return r.substring(0, r.indexOf("_"));
+  }
 
   @override
   Widget build(BuildContext context) {

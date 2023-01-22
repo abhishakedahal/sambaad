@@ -4,8 +4,11 @@ import 'package:sambaad/service/database_service.dart';
 import 'package:sambaad/helper/helper_function.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../widgets/widgets.dart';
+import 'chat_page.dart';
+
 class SearchPage extends StatefulWidget {
-    const SearchPage({Key? key}) : super(key: key);
+  const SearchPage({Key? key}) : super(key: key);
 
   @override
   State<SearchPage> createState() => _SearchPageState();
@@ -17,6 +20,7 @@ class _SearchPageState extends State<SearchPage> {
   QuerySnapshot? searchSnapshot;
   bool hasUserSearched = false;
   String userName = "";
+  bool isJoined = false;
   User? user;
 
   @override
@@ -31,7 +35,15 @@ class _SearchPageState extends State<SearchPage> {
         userName = value!;
       });
     });
-     user = FirebaseAuth.instance.currentUser;
+    user = FirebaseAuth.instance.currentUser;
+  }
+
+  String getName(String r) {
+    return r.substring(r.indexOf("_") + 1);
+  }
+
+  String getId(String r) {
+    return r.substring(0, r.indexOf("_"));
   }
 
   @override
@@ -62,7 +74,7 @@ class _SearchPageState extends State<SearchPage> {
               ),
               GestureDetector(
                 onTap: () {
-                  initiateSearchMethod(); 
+                  initiateSearchMethod();
                 },
                 child: Container(
                   height: 40,
@@ -82,8 +94,7 @@ class _SearchPageState extends State<SearchPage> {
           ),
         ),
         isLoading
-            ? Center(
-                child: CircularProgressIndicator(color: Color(0xff075E54)))
+            ? Center(child: CircularProgressIndicator(color: Color(0xff075E54)))
             : groupList(),
       ]),
     );
@@ -123,8 +134,97 @@ class _SearchPageState extends State<SearchPage> {
         : Container();
   }
 
+  joinedOrNot(
+      String userName, String groupId, String groupName, String admin) async {
+    await DatabaseService(uid: user!.uid)
+        .isUserJoined(groupName, groupId, userName)
+        .then((value) {
+      setState(() {
+        isJoined = value;
+      });
+    });
+  }
+
   Widget groupTile(
       String userName, String groupId, String groupName, String admin) {
-    return Text("hello");
+    //function to check if user is already in group
+    joinedOrNot(userName, groupId, groupName, admin);
+    return ListTile(
+      contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      leading: CircleAvatar(
+          radius: 25,
+          backgroundColor: Color(0xff075E54),
+          child: Text(
+            groupName.substring(0, 1).toUpperCase(),
+            style: const TextStyle(color: Colors.white, fontSize: 20),
+          )),
+      title: Text(groupName,
+          style: const TextStyle(
+              color: Color(0xff075E54),
+              fontSize: 20,
+              fontWeight: FontWeight.w600)),
+      subtitle: Text(
+        "Admin: ${getName(admin)}",
+        style: const TextStyle(
+            color: Color.fromARGB(255, 94, 95, 95), fontSize: 15),
+      ),
+      trailing: InkWell(
+          onTap: () async {
+            await DatabaseService(uid: user!.uid)
+                .toggleGroupJoin(groupId, userName, groupName);
+
+            if (isJoined) {
+              setState(() {
+                isJoined = !isJoined;
+              });
+              // ignore: use_build_context_synchronously
+              showSnackbar(
+                  context, Colors.green, "Successfully joined the group");
+
+              Future.delayed(const Duration(seconds: 2), () {
+                nextScreen(
+                    context,
+                    ChatPage(
+                        groupId: groupId,
+                        groupName: groupName,
+                        userName: userName));
+              });
+            } else {
+              setState(() {
+                isJoined = !isJoined;
+              });
+              // ignore: use_build_context_synchronously
+              showSnackbar(context, Colors.red,
+                  "Successfully left the group $groupName");
+            }
+          },
+          child: isJoined
+              ? Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Color.fromARGB(255, 55, 175, 18)
+                      // border: Border.all(color: Color(0xff075E54)),
+                      ),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  child: const Text(
+                    "Joined",
+                    style: TextStyle(color: Colors.white, fontSize: 15),
+                  ),
+                )
+              : Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Color(0xff075E54),
+                    border: Border.all(color: Color(0xff075E54)),
+                  ),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  child: const Text(
+                    "Join Now",
+                    style: TextStyle(color: Colors.white, fontSize: 15),
+                  ),
+                )),
+    );
   }
 }

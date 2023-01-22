@@ -51,7 +51,7 @@ class _GroupTileState extends State<GroupTile> {
               ),
             ),
             subtitle: Text(
-              "Created by ${widget.userName}",
+              "Join the conversation as ${widget.userName}",
               style: const TextStyle(
                 color: Color.fromARGB(255, 144, 161, 159),
                 fontSize: 14,
