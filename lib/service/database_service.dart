@@ -63,11 +63,15 @@ class DatabaseService {
   //get the chats
 
   getChats(String groupId) async {
-    return groupCollection.doc(groupId).collection("messages").orderBy("time").snapshots(); 
+    return groupCollection
+        .doc(groupId)
+        .collection("messages")
+        .orderBy("time")
+        .snapshots();
   }
 
   // get the admin
-  Future getGroupAdmin(String groupId ) async {
+  Future getGroupAdmin(String groupId) async {
     DocumentReference d = groupCollection.doc(groupId);
     DocumentSnapshot documentSnapshot = await d.get();
     return documentSnapshot['admin'];
@@ -81,23 +85,25 @@ class DatabaseService {
   }
 
   // search for group
-  searchByName( String groupName) {
-    return groupCollection.where("groupName",isEqualTo: groupName).get();
+  searchByName(String groupName) {
+    return groupCollection.where("groupName", isEqualTo: groupName).get();
   }
 
-  // is user joined in the group
-  Future<bool> isUserJoined(String groupName, String groupId, String userName) async {
-    DocumentReference userDocumentReference = groupCollection.doc(uid);
+  // function -> bool
+  Future<bool> isUserJoined(
+      String groupName, String groupId, String userName) async {
+    DocumentReference userDocumentReference = usersCollection.doc(uid);
     DocumentSnapshot documentSnapshot = await userDocumentReference.get();
-    List<dynamic> groups =  await documentSnapshot['groups'];
-    if(groups.contains("${groupId}_$groupName")){
+
+    List<dynamic> groups = await documentSnapshot['groups'];
+    if (groups.contains("${groupId}_$groupName")) {
       return true;
-    }else{
+    } else {
       return false;
     }
   }
 
-   // toggling the group join/exit
+  // toggling the group join/exit
   Future toggleGroupJoin(
       String groupId, String userName, String groupName) async {
     // doc reference
@@ -125,4 +131,14 @@ class DatabaseService {
     }
   }
 
+  //send message
+
+  sendMessage(String groupId, Map<String, dynamic> chatMessageData) {
+    groupCollection.doc(groupId).collection("messages").add(chatMessageData);
+    groupCollection.doc(groupId).update({
+      "recentMessage": chatMessageData["message"],
+      "recentMessageSender": chatMessageData["sender"],
+      "recentMessageTime": chatMessageData["time"].toString()
+    });
+  }
 }
