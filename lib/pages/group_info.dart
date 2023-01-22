@@ -176,7 +176,7 @@ class _GroupInfoState extends State<GroupInfo> {
                         ),
                       ),
                       title: Text(getName(snapshot.data['members'][index])),
-                      
+                      //subtitle: Text(getId(snapshot.data['members'][index])),
                     ),
                   );
                 },
