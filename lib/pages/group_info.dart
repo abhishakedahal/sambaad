@@ -8,10 +8,12 @@ class GroupInfo extends StatefulWidget {
   final String groupId;
   final String groupName;
   final String adminName;
+  final String userName;
   const GroupInfo({Key?key,
   required this.adminName,
   required this.groupName,
-  required this.groupId
+  required this.groupId,
+  required this.userName
   }):super(key: key);
 
   @override
@@ -70,7 +72,7 @@ class _GroupInfoState extends State<GroupInfo> {
                                           .instance.currentUser!.uid)
                                   .toggleGroupJoin(
                                       widget.groupId,
-                                      getName(widget.adminName),
+                                      getName(widget.userName),
                                       widget.groupName)
                                   .whenComplete(() {
                                 nextScreenReplace(context, const HomePage());
@@ -162,6 +164,7 @@ class _GroupInfoState extends State<GroupInfo> {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
                     child: ListTile(
+                      
                       leading: CircleAvatar(
                         radius: 30,
                         backgroundColor: Theme.of(context).primaryColor,

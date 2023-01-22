@@ -188,6 +188,7 @@ class _RegisterPageState extends State<RegisterPage> {
           await HelperFunction.saveUserNameSF(fullName);
          // nextScreenReplace(context,const HomePage());
           nextScreenReplace(context,const LoginPage());
+          showSnackbar(context, Colors.green, "Registration  successfull.");
        
         }else{
           showSnackbar(context, Colors.red, value);

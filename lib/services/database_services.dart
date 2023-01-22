@@ -37,11 +37,13 @@ final CollectionReference groupCollection =FirebaseFirestore.instance.collection
       "groupName":groupName,
       "groupIcon":"",
       "admin":"${id}_$userName",
-      "member":[],
+      "members":[],
       "groupId":"",
       "recentMessage":"",
       "recentMessageSender":"",
     });
+
+    //updating the members
 
     await groupDocumentReference.update({
       "members":FieldValue.arrayUnion(["${uid}_$userName"]),
@@ -64,7 +66,8 @@ final CollectionReference groupCollection =FirebaseFirestore.instance.collection
     DocumentSnapshot documentSnapshot = await d.get();
     return documentSnapshot['admin'];
   }
-//get group members
+
+//getting group members
   getGroupMembers(groupId)async{
     return groupCollection.doc(groupId).snapshots();
   }
@@ -88,8 +91,7 @@ final CollectionReference groupCollection =FirebaseFirestore.instance.collection
   }
 
   // toggling the group join/exit
-  Future toggleGroupJoin(
-      String groupId, String userName, String groupName) async {
+  Future toggleGroupJoin(String groupId, String userName, String groupName) async {
     // doc reference
     DocumentReference userDocumentReference = userCollection.doc(uid);
     DocumentReference groupDocumentReference = groupCollection.doc(groupId);

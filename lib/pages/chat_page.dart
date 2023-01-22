@@ -60,6 +60,7 @@ class _ChatPageState extends State<ChatPage> {
                       groupId: widget.groupId,
                       groupName: widget.groupName,
                       adminName: admin,
+                      userName: widget.userName,
                     ));
               },
               icon: const Icon(Icons.info))
@@ -74,7 +75,7 @@ class _ChatPageState extends State<ChatPage> {
             alignment: Alignment.bottomCenter,
             width: MediaQuery.of(context).size.width,
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               width: MediaQuery.of(context).size.width,
               color: Colors.grey[700],
               child: Row(children: [
@@ -83,7 +84,7 @@ class _ChatPageState extends State<ChatPage> {
                   controller: messageController,
                   style: const TextStyle(color: Colors.white),
                   decoration: const InputDecoration(
-                    hintText: "Send a message...",
+                    hintText: "Enter a message...",
                     hintStyle: TextStyle(color: Colors.white, fontSize: 15),
                     border: InputBorder.none,
                   ),
@@ -96,8 +97,8 @@ class _ChatPageState extends State<ChatPage> {
                     sendMessage();
                   },
                   child: Container(
-                    height: 50,
-                    width: 50,
+                    height: 40,
+                    width: 40,
                     decoration: BoxDecoration(
                       color: Theme.of(context).primaryColor,
                       borderRadius: BorderRadius.circular(30),
