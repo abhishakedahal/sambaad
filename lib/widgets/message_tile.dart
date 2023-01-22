@@ -19,8 +19,8 @@ class _MessageTileState extends State<MessageTile> {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(
-          top: 4,
-          bottom: 4,
+          top: 40,
+          bottom:50,
           left: widget.sentByMe ? 0 : 24,
           right: widget.sentByMe ? 24 : 0),
       alignment: widget.sentByMe ? Alignment.centerRight : Alignment.centerLeft,
@@ -69,6 +69,7 @@ class _MessageTileState extends State<MessageTile> {
           ],
         ),
       ),
+       
     );
   }
 }

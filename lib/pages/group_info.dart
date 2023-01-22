@@ -162,6 +162,7 @@ class _GroupInfoState extends State<GroupInfo> {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
                     child: ListTile(
+                      
                       leading: CircleAvatar(
                         radius: 30,
                         backgroundColor: Theme.of(context).primaryColor,
@@ -176,7 +177,7 @@ class _GroupInfoState extends State<GroupInfo> {
                         ),
                       ),
                       title: Text(getName(snapshot.data['members'][index])),
-                      //subtitle: Text(getId(snapshot.data['members'][index])),
+                    //  subtitle: Text(getId(snapshot.data['members'][index])),
                     ),
                   );
                 },
