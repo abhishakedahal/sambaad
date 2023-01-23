@@ -41,10 +41,11 @@ class _RegisterPageState extends State<RegisterPage> {
                 children: <Widget>[
                     const Text(
                       "संवाद",
-                      style: TextStyle(fontSize: 40,fontWeight: FontWeight.w400)
+                      style: TextStyle(fontSize: 40,fontWeight: FontWeight.bold)
                     ),
                       const SizedBox(height: 5),
                       const Text("Create your account now to see what people are talking about!",
+                        textAlign: TextAlign.center,
                         style: TextStyle(fontSize:15,fontWeight:FontWeight.w400)),
                         const SizedBox(height:20),
                       Image.asset("assets/main1.png"),

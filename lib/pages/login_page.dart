@@ -47,7 +47,9 @@ class _LoginPageState extends State<LoginPage> {
                       style: TextStyle(fontSize: 40,fontWeight: FontWeight.bold)
                     ),
                       const SizedBox(height: 5),
-                      const Text("Log in and start conversing instantly! No barriers, no limits!",
+                      //const Text("Login and start conversing instantly! No barriers, no limits!",
+                      const Text("Stay connected with friends and family, no matter where you are.",
+                      textAlign: TextAlign.center,
                         style: TextStyle(fontSize:15,fontWeight:FontWeight.w400)),
                       const SizedBox(height: 20),
                       Image.asset("assets/main1.png"),
