@@ -69,11 +69,14 @@ class _ChatPageState extends State<ChatPage> {
         ],
       ),
 
-      body: Stack(
+      body: Column(
         children: <Widget>[
-          // chat messages here
-          chatMessages(),
+
+          // chat messages here 
+        Expanded(child: chatMessages()), // chatMessages() calling,
+
           Container(
+            
             alignment: Alignment.bottomCenter,
             width: MediaQuery.of(context).size.width,
             child: Container(
