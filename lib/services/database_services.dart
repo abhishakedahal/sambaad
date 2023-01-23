@@ -58,7 +58,7 @@ final CollectionReference groupCollection =FirebaseFirestore.instance.collection
 
   //getting the chats
   getChats(String groupId)async{
-    return groupCollection.doc(groupId).collection("messages").orderBy("time").snapshots();
+    return groupCollection.doc(groupId).collection("messages").orderBy("time",descending: true).snapshots();
   }
 
   Future getGroupAdmin(String groupId) async {

@@ -13,7 +13,9 @@ class ChatPage extends StatefulWidget {
   const ChatPage({Key?key,
   required this.groupId,
   required this.groupName,
-  required this.userName}):super(key:key);
+  required this.userName,
+  
+  }):super(key:key);
 
   @override
   State<ChatPage> createState() => _ChatPageState();
@@ -84,7 +86,7 @@ class _ChatPageState extends State<ChatPage> {
                   controller: messageController,
                   style: const TextStyle(color: Colors.white),
                   decoration: const InputDecoration(
-                    hintText: "Enter a message...",
+                    hintText: "Type a message...",
                     hintStyle: TextStyle(color: Colors.white, fontSize: 15),
                     border: InputBorder.none,
                   ),
@@ -124,13 +126,17 @@ class _ChatPageState extends State<ChatPage> {
       builder: (context, AsyncSnapshot snapshot) {
         return snapshot.hasData
             ? ListView.builder(
+              reverse: true,    //update
+
                 itemCount: snapshot.data.docs.length,
                 itemBuilder: (context, index) {
                   return MessageTile(
                       message: snapshot.data.docs[index]['message'],
                       sender: snapshot.data.docs[index]['sender'],
                       sentByMe: widget.userName ==
-                          snapshot.data.docs[index]['sender']);
+                          snapshot.data.docs[index]['sender'],
+                        
+                          );
                 },
               )
             : Container();
