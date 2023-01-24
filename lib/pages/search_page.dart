@@ -195,7 +195,7 @@ class _SearchPageState extends State<SearchPage> {
             ? Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  color: Colors.black,
+                  color: Colors.green,
                   border: Border.all(color: Colors.white, width: 1),
                 ),
                 padding:

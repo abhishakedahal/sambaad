@@ -142,6 +142,17 @@ class _GroupInfoState extends State<GroupInfo> {
                 ],
               ),
             ),
+            const SizedBox(
+              height: 50,
+            ),
+            
+            const Text("MEMBERS",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+            ),
+
             memberList(),
           ],
         ),

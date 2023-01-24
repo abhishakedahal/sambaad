@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class MessageTile extends StatefulWidget {
@@ -8,7 +9,8 @@ class MessageTile extends StatefulWidget {
   const MessageTile({Key?key,
   required this.message,
   required this.sender,
-  required this.sentByMe}):super(key:key);
+  required this.sentByMe,
+  }):super(key:key);
 
   @override
   State<MessageTile> createState() => _MessageTileState();
@@ -18,11 +20,13 @@ class _MessageTileState extends State<MessageTile> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      
       padding: EdgeInsets.only(
-          top: 40,
-          bottom:50,
+          top: 15,
+          bottom:15,
           left: widget.sentByMe ? 0 : 24,
           right: widget.sentByMe ? 24 : 0),
+          
       alignment: widget.sentByMe ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
         margin: widget.sentByMe
@@ -65,7 +69,8 @@ class _MessageTileState extends State<MessageTile> {
             ),
             Text(widget.message,
                 textAlign: TextAlign.start,
-                style: const TextStyle(fontSize: 16, color: Colors.white))
+                style: const TextStyle(fontSize: 16, color: Colors.white)),
+
           ],
         ),
       ),
