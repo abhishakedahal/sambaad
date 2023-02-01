@@ -1,5 +1,3 @@
-***This project is still in development. Keep checking back for more updates!! Hoping to add some cool stuffs!!***
-
 # sambaad
 
 A new Flutter project.

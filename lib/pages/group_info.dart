@@ -1,60 +1,48 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sambaad/pages/home_page.dart';
-import 'package:sambaad/service/database_service.dart';
-
-import '../helper/helper_function.dart';
-import '../widgets/widgets.dart';
+import 'package:sambaad/services/database_services.dart';
+import 'package:sambaad/widgets/widgets.dart';
 
 class GroupInfo extends StatefulWidget {
   final String groupId;
   final String groupName;
   final String adminName;
- 
-  const GroupInfo(
-      {super.key,
-      required this.groupId,
-      required this.groupName,
-      required this.adminName});
+  final String userName;
+  const GroupInfo({Key?key,
+  required this.adminName,
+  required this.groupName,
+  required this.groupId,
+  required this.userName
+  }):super(key: key);
 
   @override
   State<GroupInfo> createState() => _GroupInfoState();
 }
-
 class _GroupInfoState extends State<GroupInfo> {
-  List members = [];
-     String userName = "";
-  User? user;
-
+  Stream? members;
   @override
   void initState() {
     getMembers();
     super.initState();
   }
 
-  void getMembers() async {
-    DatabaseService().getGroupMembers(widget.groupId).then((val) {
+  getMembers() async {
+    DatabaseServices(uid: FirebaseAuth.instance.currentUser!.uid)
+        .getGroupMembers(widget.groupId)
+        .then((val) {
       setState(() {
         members = val;
       });
     });
   }
 
-    getCurrentUserIdandName() async {
-    await HelperFunction.getUserNameSF().then((value) {
-      setState(() {
-        userName = value!;
-      });
-    });
-    user = FirebaseAuth.instance.currentUser;
-  }
-
   String getName(String r) {
     return r.substring(r.indexOf("_") + 1);
   }
 
-  String getId(String r) {
-    return r.substring(0, r.indexOf("_"));
+  String getId(String res) {
+    return res.substring(0, res.indexOf("_"));
   }
 
   @override
@@ -64,7 +52,7 @@ class _GroupInfoState extends State<GroupInfo> {
         centerTitle: true,
         elevation: 0,
         backgroundColor: Theme.of(context).primaryColor,
-        title: Text(widget.groupName),
+        title: const Text("Group Info"),
         actions: [
           IconButton(
               onPressed: () {
@@ -74,32 +62,39 @@ class _GroupInfoState extends State<GroupInfo> {
                     builder: (context) {
                       return AlertDialog(
                         title: const Text("Exit"),
-                        content: const Text(
-                            "Are you sure you want to exit from this group?"),
+                        content:
+                            const Text("Are you sure you want to exit from group? "),
                         actions: [
                           IconButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            icon: const Icon(Icons.cancel,
-                                color: Color.fromARGB(255, 182, 28, 28)),
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.check,
-                                color: Color(0xff075e54)),
                             onPressed: () async {
-                              DatabaseService(
+                              DatabaseServices(
                                       uid: FirebaseAuth
                                           .instance.currentUser!.uid)
                                   .toggleGroupJoin(
                                       widget.groupId,
-                                      userName,
+                                      getName(widget.userName),
                                       widget.groupName)
                                   .whenComplete(() {
                                 nextScreenReplace(context, const HomePage());
                               });
                             },
+                            icon: const Icon(
+                              Icons.done,
+                              color: Colors.green,
+                            ),
                           ),
+
+
+                          IconButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            icon: const Icon(
+                              Icons.cancel,
+                              color: Colors.red,
+                            ),
+                          ),
+                          
                         ],
                       );
                     });
@@ -108,127 +103,116 @@ class _GroupInfoState extends State<GroupInfo> {
         ],
       ),
       body: Container(
-
-          // padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-          child: Column(
-            children: [
-              Column(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        child: Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30),
+                  color: Theme.of(context).primaryColor.withOpacity(0.2)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  const Text(
-                    "Admin",
-                    style: TextStyle(
-                        color: Color(0xff075E54),
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold),
+                  CircleAvatar(
+                    radius: 30,
+                    backgroundColor: Theme.of(context).primaryColor,
+                    child: Text(
+                      widget.groupName.substring(0, 1).toUpperCase(),
+                      style: const TextStyle(
+                          fontWeight: FontWeight.w500, color: Colors.white),
+                    ),
                   ),
                   const SizedBox(
-                    height: 20,
+                    width: 20,
                   ),
-                  Container(
-                    padding: const EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).primaryColor.withOpacity(0.3),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        CircleAvatar(
-                          radius: 30,
-                          backgroundColor: Theme.of(context).primaryColor,
-                          child: Text(
-                            widget.groupName.substring(0, 1).toUpperCase(),
-                            style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 20,
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              getName(widget.adminName),
-                              style: const TextStyle(
-                                  color: Color(0xff075E54),
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Group: ${widget.groupName}",
+                        style: const TextStyle(fontWeight: FontWeight.w500),
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Text("Admin: ${getName(widget.adminName)}")
+                    ],
+                  )
                 ],
               ),
-              const SizedBox(
-                height: 20,
-              ),
-              const Text(
-                "Members",
+            ),
+            const SizedBox(
+              height: 50,
+            ),
+            
+            const Text("MEMBERS",
                 style: TextStyle(
-                    color: Color(0xff075E54),
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Expanded(
-                child: members.length > 1
-                    ? ListView.builder(
-                        itemCount: members.length,
-                        itemBuilder: (context, index) {
-                          return Container(
-                            padding: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: Theme.of(context)
-                                  .primaryColor
-                                  .withOpacity(0.3),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            margin: const EdgeInsets.only(bottom: 10),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                CircleAvatar(
-                                  radius: 30,
-                                  backgroundColor:
-                                      Theme.of(context).primaryColor,
-                                  child: Text(
-                                    getName(members[index])
-                                        .substring(0, 1)
-                                        .toUpperCase(),
-                                    style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 20,
-                                ),
-                                Text(
-                                  getName(members[index]),
-                                  style: const TextStyle(
-                                    color: Color(0xff075E54),
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        })
-                    : Container(child: Text("No members yet")),
-              ),
-            ],
-          )),
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+            ),
+
+            memberList(),
+          ],
+        ),
+      ),
     );
   }
+
+  memberList() {
+    return StreamBuilder(
+      stream: members,
+      builder: (context, AsyncSnapshot snapshot) {
+        if (snapshot.hasData) {
+          if (snapshot.data['members'] != null) {
+            if (snapshot.data['members'].length != 0) {
+              return ListView.builder(
+                itemCount: snapshot.data['members'].length,
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+                    child: ListTile(
+                      
+                      leading: CircleAvatar(
+                        radius: 30,
+                        backgroundColor: Theme.of(context).primaryColor,
+                        child: Text(
+                          getName(snapshot.data['members'][index])
+                              .substring(0, 1)
+                              .toUpperCase(),
+                          style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      title: Text(getName(snapshot.data['members'][index])),
+                      
+                    ),
+                  );
+                },
+              );
+            } else {
+              return const Center(
+                child: Text("NO MEMBERS"),
+              );
+            }
+          } else {
+            return const Center(
+              child: Text("NO MEMBERS"),
+            );
+          }
+        } else {
+          return Center(
+              child: CircularProgressIndicator(
+            color: Theme.of(context).primaryColor,
+          ));
+        }
+      },
+    );
+  }
+
 }

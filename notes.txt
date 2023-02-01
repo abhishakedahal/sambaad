@@ -1,0 +1,87 @@
+class _LanguageDropdown extends StatefulWidget {
+  final Function(String) onLanguageSelected;
+
+  _LanguageDropdown({this.onLanguageSelected});
+
+  @override
+  __LanguageDropdownState createState() => __LanguageDropdownState();
+}
+
+class __LanguageDropdownState extends State<_LanguageDropdown> {
+  String _selectedLanguage = 'Nepali';
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButton<String>(
+      icon: Icon(Icons.language),
+      items: [
+        DropdownMenuItem(
+          child: Text('Nepali'),
+          value: 'Nepali',
+        ),
+        DropdownMenuItem(
+          child: Text('English'),
+          value: 'English',
+        ),
+        DropdownMenuItem(
+          child: Text('French'),
+          value: 'French',
+        ),
+        DropdownMenuItem(
+          child: Text('German'),
+          value: 'German',
+        ),
+        DropdownMenuItem(
+          child: Text('Chinese'),
+          value: 'Chinese',
+        ),
+      ],
+      onChanged: (value) {
+        setState(() {
+          _selectedLanguage = value;
+        });
+        widget.onLanguageSelected(value);
+      },
+      value: _selectedLanguage,
+    );
+  }
+}
+
+
+
+...
+AppBar(
+  centerTitle: true,
+  elevation: 0,
+  title: Text(widget.groupName),
+  backgroundColor: Theme.of(context).primaryColor,
+  actions: [
+    IconButton(
+        onPressed: () {
+          nextScreen(context, const SearchMessage());
+        },
+        icon: const Icon(
+          Icons.search,
+        )),
+    IconButton(
+        onPressed: () {
+          nextScreen(
+              context,
+              GroupInfo(
+                groupId: widget.groupId,
+                groupName: widget.groupName,
+                adminName: admin,
+                userName: widget.userName,
+              ));
+        },
+        icon: const Icon(Icons.info)),
+    _LanguageDropdown(
+      onLanguageSelected: (selectedLanguage) {
+        setState(() {
+          // update language code here based on the selected language
+        });
+      },
+    ),
+  ],
+),
+...

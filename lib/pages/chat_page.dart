@@ -1,20 +1,42 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:sambaad/pages/group_info.dart';
-import 'package:sambaad/service/database_service.dart';
+import 'package:sambaad/services/database_services.dart';
 import 'package:sambaad/widgets/message_tile.dart';
 import 'package:sambaad/widgets/widgets.dart';
+import 'package:sambaad/pages/search_message.dart';
+import 'package:encrypt/encrypt.dart' as encrypt;
+
+class AESEncryption {
+  static encryptAES(plainText) {
+    final key = encrypt.Key.fromUtf8('JaNdRgUkXp2s5v8y/B?E(H+MbQeShVmY');
+    final iv = encrypt.IV.fromLength(16);
+    final encrypter = encrypt.Encrypter(encrypt.AES(key));
+    final encrypted = encrypter.encrypt(plainText, iv: iv);
+    return encrypted.base64;
+  }
+
+  static decryptAES(encryptedText) {
+    final key = encrypt.Key.fromUtf8('JaNdRgUkXp2s5v8y/B?E(H+MbQeShVmY');
+    final iv = encrypt.IV.fromLength(16);
+    final encrypter = encrypt.Encrypter(encrypt.AES(key));
+    final encrypted = encrypt.Encrypted.fromBase64(encryptedText);
+    final decrypted = encrypter.decrypt(encrypted, iv: iv);
+    return decrypted;
+  }
+}
 
 class ChatPage extends StatefulWidget {
   final String groupId;
   final String groupName;
   final String userName;
-  const ChatPage(
-      {Key? key,
-      required this.groupId,
-      required this.groupName,
-      required this.userName})
-      : super(key: key);
+
+  const ChatPage({
+    Key? key,
+    required this.groupId,
+    required this.groupName,
+    required this.userName,
+  }) : super(key: key);
 
   @override
   State<ChatPage> createState() => _ChatPageState();
@@ -22,9 +44,9 @@ class ChatPage extends StatefulWidget {
 
 class _ChatPageState extends State<ChatPage> {
   Stream<QuerySnapshot>? chats;
-
   TextEditingController messageController = TextEditingController();
   String admin = "";
+  String selectedLanguageCode = "en";
 
   @override
   void initState() {
@@ -32,13 +54,13 @@ class _ChatPageState extends State<ChatPage> {
     super.initState();
   }
 
-  getChatandAdmin() async {
-    DatabaseService().getChats(widget.groupId).then((val) {
+  getChatandAdmin() {
+    DatabaseServices().getChats(widget.groupId).then((val) {
       setState(() {
         chats = val;
       });
     });
-    DatabaseService().getGroupAdmin(widget.groupId).then((val) {
+    DatabaseServices().getGroupAdmin(widget.groupId).then((val) {
       setState(() {
         admin = val;
       });
@@ -49,11 +71,18 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
+        // centerTitle: true,
         elevation: 0,
-        backgroundColor: Theme.of(context).primaryColor,
         title: Text(widget.groupName),
+        backgroundColor: Theme.of(context).primaryColor,
         actions: [
+          IconButton(
+              onPressed: () {
+                nextScreen(context, const SearchMessage());
+              },
+              icon: const Icon(
+                Icons.search,
+              )),
           IconButton(
               onPressed: () {
                 nextScreen(
@@ -62,77 +91,167 @@ class _ChatPageState extends State<ChatPage> {
                       groupId: widget.groupId,
                       groupName: widget.groupName,
                       adminName: admin,
+                      userName: widget.userName,
                     ));
               },
-              icon: Icon(Icons.info)),
+              icon: const Icon(Icons.info)),
+          PopupMenuButton<String>(
+            onSelected: (value) {
+              setState(() {
+                selectedLanguageCode = value;
+              });
+            },
+            icon: const Icon(
+              Icons.language,
+              color: Colors.white,
+            ),
+            itemBuilder: (BuildContext context) => <PopupMenuItem<String>>[
+              PopupMenuItem(
+                value: "ne",
+                child: Container(
+                  color: selectedLanguageCode == 'ne' ? Colors.green : null,
+                  child: const Text("Nepali"),
+                ),
+              ),
+              PopupMenuItem(
+                value: "en",
+                child: Container(
+                  color: selectedLanguageCode == 'en' ? Colors.green : null,
+                  child: const Text("English"),
+                ),
+              ),
+              PopupMenuItem(
+                value: "fr",
+                child: Container(
+                  color: selectedLanguageCode == 'fr' ? Colors.green : null,
+                  child: const Text("French"),
+                ),
+              ),
+              PopupMenuItem(
+                value: "de",
+                child: Container(
+                  color : selectedLanguageCode == 'de' ? Colors.green : null,
+                  child: const Text("German"),
+                ),
+              ),
+              PopupMenuItem(
+                value: "zh",
+                child: Container(
+                  color: selectedLanguageCode == 'zh' ? Colors.green : null,
+                  child: const Text("Chinese"),
+                ),
+              ),
+            ],
+          ),
         ],
       ),
-      body: Stack(children: <Widget>[
-        chatMessages(),
-        Container(
+      body: Column(
+        children: <Widget>[
+          // chat messages here
+          Expanded(child: chatMessages()), // chatMessages() calling,
+
+          Container(
             alignment: Alignment.bottomCenter,
             width: MediaQuery.of(context).size.width,
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               width: MediaQuery.of(context).size.width,
-              color: Color.fromARGB(255, 84, 84, 84),
+              color: Colors.grey[700],
               child: Row(children: [
                 Expanded(
                     child: TextFormField(
                   controller: messageController,
                   style: const TextStyle(color: Colors.white),
                   decoration: const InputDecoration(
-                    hintText: "Send a message...",
-                    hintStyle: TextStyle(color: Colors.white, fontSize: 16),
+                    hintText: "Type a message...",
+                    hintStyle: TextStyle(color: Colors.white, fontSize: 15),
                     border: InputBorder.none,
                   ),
                 )),
+                const SizedBox(
+                  width: 12,
+                ),
                 GestureDetector(
                   onTap: () {
                     sendMessage();
                   },
                   child: Container(
-                      height: 50,
-                      width: 50,
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).primaryColor,
-                        borderRadius: BorderRadius.circular(40),
-                      ),
-                      child: const Center(
-                        child: Icon(Icons.send, color: Colors.white, size: 18),
-                      )),
+                    height: 40,
+                    width: 40,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).primaryColor,
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    child: const Center(
+                        child: Icon(
+                      Icons.send,
+                      color: Colors.white,
+                    )),
+                  ),
                 )
               ]),
-            ))
-      ]),
+            ),
+          )
+        ],
+      ),
     );
   }
 
-chatMessages() {
+  chatMessages() {
     return StreamBuilder(
       stream: chats,
       builder: (context, AsyncSnapshot snapshot) {
-        return snapshot.hasData ? Container(
-            constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height - 200),
-            child: ListView.builder(itemCount: snapshot.data.docs.length, itemBuilder: (context, index){
-              return MessageTile(message: snapshot.data.docs[index]['message'], sender: snapshot.data.docs[index]['sender'], sentByMe: widget.userName == snapshot.data.docs[index]['sender']);
-            },
-            )
-           ) : Container();
+        return snapshot.hasData
+            ? ListView.builder(
+                reverse: true, //update
+
+                itemCount: snapshot.data.docs.length,
+                itemBuilder: (context, index) {
+                  if (widget.userName == snapshot.data.docs[index]['sender']) {
+                    return MessageTile(
+                      message: snapshot.data.docs[index]['message'],
+                      sender: snapshot.data.docs[index]['sender'],
+                      sentByMe: widget.userName ==
+                          snapshot.data.docs[index]['sender'],
+                    );
+                  } else {
+                    if (snapshot
+                        .data
+                        .docs[index]['translatedfield'][selectedLanguageCode]
+                        .isEmpty) {
+                      return MessageTile(
+                        message: "Typing....",
+                        sender: snapshot.data.docs[index]['sender'],
+                        sentByMe: widget.userName ==
+                            snapshot.data.docs[index]['sender'],
+                      );
+                    } else {
+                      return MessageTile(
+                        message: snapshot.data.docs[index]['translatedfield']
+                            [selectedLanguageCode],
+                        sender: snapshot.data.docs[index]['sender'],
+                        sentByMe: widget.userName ==
+                            snapshot.data.docs[index]['sender'],
+                      );
+                    }
+                  }
+                },
+              )
+            : Container();
       },
     );
   }
-
 
   sendMessage() {
     if (messageController.text.isNotEmpty) {
       Map<String, dynamic> chatMessageMap = {
         "message": messageController.text,
+        // "message": AESEncryption.encryptAES(messageController.text),
         "sender": widget.userName,
         "time": DateTime.now().millisecondsSinceEpoch,
       };
 
-      DatabaseService().sendMessage( widget.groupId, chatMessageMap );
+      DatabaseServices().sendMessage(widget.groupId, chatMessageMap);
       setState(() {
         messageController.clear();
       });

@@ -1,11 +1,11 @@
+import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
-
-class Constants {
-  static String apiKey = "AIzaSyDmodsjykTIHMTt-zxDPcK3Jv33KgOhhnk";
-  static String authDomain = "sambaad-72d35.firebaseapp.com";
-  static String projectId = "sambaad-72d35";
-  static String storageBucket = "sambaad-72d35.appspot.com";
-  static String messagingSenderId = "309225266866";
-  static String appId = "1:309225266866:web:f16b95321c4b1f03b5b3ab";
-  final primaryColor = const Color(0xff075E54);
+class Constants{
+  static String appId="1:349620511454:web:d39dc5bcdcf44f0ad6584f";
+  static String apiKey="AIzaSyBy6c7mSLW8A54OwMtezLQrqPZe6sW9QDE";
+  static String messagingSenderId="349620511454";
+  static String projectId="sambaad-4";
+  //final primaryColor=const Color(0xFFee7b64);
+  //final primaryColor=const Color(0xff075E54);
+  final primaryColor=Color.fromARGB(255, 50, 155, 253);
 }
