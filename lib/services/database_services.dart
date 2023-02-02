@@ -1,64 +1,70 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class DatabaseServices{
+class DatabaseServices {
   final String? uid;
   DatabaseServices({this.uid});
 
-
-  
-
-final CollectionReference userCollection=FirebaseFirestore.instance.collection("users");
-final CollectionReference groupCollection =FirebaseFirestore.instance.collection("groups");
+  final CollectionReference userCollection =
+      FirebaseFirestore.instance.collection("users");
+  final CollectionReference groupCollection =
+      FirebaseFirestore.instance.collection("groups");
 
   //update or saving user data
-  Future savingUserData(String fullName, String email)async{
+  Future savingUserData(String fullName, String email) async {
     return await userCollection.doc(uid).set({
-      "fullName":fullName,
-      "email":email,
-      "groups":[],            //empty array
-      "profilePic":"",
-      "uid":uid,
-      });
+      "fullName": fullName,
+      "email": email,
+      "groups": [], //empty array
+      "profilePic": "",
+      "uid": uid,
+    });
   }
 
   //getting user data
-  Future gettingUserData(String email)async{
-    QuerySnapshot snapshot=await userCollection.where("email",isEqualTo: email).get();
+  Future gettingUserData(String email) async {
+    QuerySnapshot snapshot =
+        await userCollection.where("email", isEqualTo: email).get();
     return snapshot;
   }
+
 //get user groups
-  getUserGroups() async{
+  getUserGroups() async {
     return userCollection.doc(uid).snapshots();
   }
 
   //creating a group
-  Future createGroup(String userName,String id,String groupName)async{
-    DocumentReference groupDocumentReference=await groupCollection.add({
-      "groupName":groupName,
-      "groupIcon":"",
-      "admin":"${id}_$userName",
-      "members":[],
-      "groupId":"",
-      "recentMessage":"",
-      "recentMessageSender":"",
+  Future createGroup(String userName, String id, String groupName) async {
+    DocumentReference groupDocumentReference = await groupCollection.add({
+      "groupName": groupName,
+      "groupIcon": "",
+      "admin": "${id}_$userName",
+      "members": [],
+      "groupId": "",
+      "recentMessage": "",
+      "recentMessageSender": "",
     });
 
     //updating the members
 
     await groupDocumentReference.update({
-      "members":FieldValue.arrayUnion(["${uid}_$userName"]),
-      "groupId":groupDocumentReference.id,
+      "members": FieldValue.arrayUnion(["${uid}_$userName"]),
+      "groupId": groupDocumentReference.id,
     });
 
-    DocumentReference userDocumentReference=userCollection.doc(uid);
+    DocumentReference userDocumentReference = userCollection.doc(uid);
     return await userDocumentReference.update({
-      "groups":FieldValue.arrayUnion(["${groupDocumentReference.id}_$groupName"])
+      "groups":
+          FieldValue.arrayUnion(["${groupDocumentReference.id}_$groupName"])
     });
   }
 
   //getting the chats
-  getChats(String groupId)async{
-    return groupCollection.doc(groupId).collection("messages").orderBy("time",descending: true).snapshots();
+  getChats(String groupId) async {
+    return groupCollection
+        .doc(groupId)
+        .collection("messages")
+        .orderBy("time", descending: true)
+        .snapshots();
   }
 
   Future getGroupAdmin(String groupId) async {
@@ -68,7 +74,7 @@ final CollectionReference groupCollection =FirebaseFirestore.instance.collection
   }
 
 //getting group members
-  getGroupMembers(groupId)async{
+  getGroupMembers(groupId) async {
     return groupCollection.doc(groupId).snapshots();
   }
 
@@ -76,6 +82,7 @@ final CollectionReference groupCollection =FirebaseFirestore.instance.collection
   searchByName(String groupName) {
     return groupCollection.where("groupName", isEqualTo: groupName).get();
   }
+
   // function -> bool
   Future<bool> isUserJoined(
       String groupName, String groupId, String userName) async {
@@ -91,7 +98,8 @@ final CollectionReference groupCollection =FirebaseFirestore.instance.collection
   }
 
   // toggling the group join/exit
-  Future toggleGroupJoin(String groupId, String userName, String groupName) async {
+  Future toggleGroupJoin(
+      String groupId, String userName, String groupName) async {
     // doc reference
     DocumentReference userDocumentReference = userCollection.doc(uid);
     DocumentReference groupDocumentReference = groupCollection.doc(groupId);
@@ -117,7 +125,6 @@ final CollectionReference groupCollection =FirebaseFirestore.instance.collection
     }
   }
 
-
   // send message
   sendMessage(String groupId, Map<String, dynamic> chatMessageData) async {
     Map<String, String> translations = {
@@ -136,6 +143,4 @@ final CollectionReference groupCollection =FirebaseFirestore.instance.collection
       "recentMessageTime": chatMessageData['time'].toString(),
     });
   }
-
-
 }
