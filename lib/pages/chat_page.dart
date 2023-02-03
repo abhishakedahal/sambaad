@@ -5,6 +5,7 @@ import 'package:sambaad/services/database_services.dart';
 import 'package:sambaad/widgets/message_tile.dart';
 import 'package:sambaad/widgets/widgets.dart';
 import 'package:sambaad/pages/search_message.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
 
 class AESEncryption {
@@ -50,6 +51,7 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
   void initState() {
+    getSavedLanguage();
     getChatandAdmin();
     super.initState();
   }
@@ -67,11 +69,23 @@ class _ChatPageState extends State<ChatPage> {
     });
   }
 
+  void saveLanguage(String selectedLanguageCode) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.setString('selectedLanguageCode', selectedLanguageCode);
+  }
+
+  void getSavedLanguage() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    setState(() {
+      selectedLanguageCode =
+          preferences.getString('selectedLanguageCode') ?? 'en';
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // centerTitle: true,
         elevation: 0,
         title: Text(widget.groupName),
         backgroundColor: Theme.of(context).primaryColor,
@@ -100,6 +114,7 @@ class _ChatPageState extends State<ChatPage> {
               setState(() {
                 selectedLanguageCode = value;
               });
+              saveLanguage(value);
             },
             icon: const Icon(
               Icons.language,
@@ -109,35 +124,35 @@ class _ChatPageState extends State<ChatPage> {
               PopupMenuItem(
                 value: "ne",
                 child: Container(
-                  color: selectedLanguageCode == 'ne' ? Colors.green : null,
+                  color: selectedLanguageCode == 'ne' ? Theme.of(context).primaryColor : null,
                   child: const Text("Nepali"),
                 ),
               ),
               PopupMenuItem(
                 value: "en",
                 child: Container(
-                  color: selectedLanguageCode == 'en' ? Colors.green : null,
+                  color: selectedLanguageCode == 'en' ? Theme.of(context).primaryColor : null,
                   child: const Text("English"),
                 ),
               ),
               PopupMenuItem(
                 value: "fr",
                 child: Container(
-                  color: selectedLanguageCode == 'fr' ? Colors.green : null,
+                  color: selectedLanguageCode == 'fr' ? Theme.of(context).primaryColor : null,
                   child: const Text("French"),
                 ),
               ),
               PopupMenuItem(
                 value: "de",
                 child: Container(
-                  color : selectedLanguageCode == 'de' ? Colors.green : null,
+                  color: selectedLanguageCode == 'de' ? Theme.of(context).primaryColor : null,
                   child: const Text("German"),
                 ),
               ),
               PopupMenuItem(
                 value: "zh",
                 child: Container(
-                  color: selectedLanguageCode == 'zh' ? Colors.green : null,
+                  color: selectedLanguageCode == 'zh' ? Theme.of(context).primaryColor : null,
                   child: const Text("Chinese"),
                 ),
               ),
