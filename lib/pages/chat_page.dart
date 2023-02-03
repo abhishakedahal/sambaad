@@ -124,35 +124,45 @@ class _ChatPageState extends State<ChatPage> {
               PopupMenuItem(
                 value: "ne",
                 child: Container(
-                  color: selectedLanguageCode == 'ne' ? Theme.of(context).primaryColor : null,
+                  color: selectedLanguageCode == 'ne'
+                      ? Theme.of(context).primaryColor
+                      : null,
                   child: const Text("Nepali"),
                 ),
               ),
               PopupMenuItem(
                 value: "en",
                 child: Container(
-                  color: selectedLanguageCode == 'en' ? Theme.of(context).primaryColor : null,
+                  color: selectedLanguageCode == 'en'
+                      ? Theme.of(context).primaryColor
+                      : null,
                   child: const Text("English"),
                 ),
               ),
               PopupMenuItem(
                 value: "fr",
                 child: Container(
-                  color: selectedLanguageCode == 'fr' ? Theme.of(context).primaryColor : null,
+                  color: selectedLanguageCode == 'fr'
+                      ? Theme.of(context).primaryColor
+                      : null,
                   child: const Text("French"),
                 ),
               ),
               PopupMenuItem(
                 value: "de",
                 child: Container(
-                  color: selectedLanguageCode == 'de' ? Theme.of(context).primaryColor : null,
+                  color: selectedLanguageCode == 'de'
+                      ? Theme.of(context).primaryColor
+                      : null,
                   child: const Text("German"),
                 ),
               ),
               PopupMenuItem(
                 value: "zh",
                 child: Container(
-                  color: selectedLanguageCode == 'zh' ? Theme.of(context).primaryColor : null,
+                  color: selectedLanguageCode == 'zh'
+                      ? Theme.of(context).primaryColor
+                      : null,
                   child: const Text("Chinese"),
                 ),
               ),
@@ -228,26 +238,40 @@ class _ChatPageState extends State<ChatPage> {
                       sender: snapshot.data.docs[index]['sender'],
                       sentByMe: widget.userName ==
                           snapshot.data.docs[index]['sender'],
+                      time: snapshot.data.docs[index]['time'],
                     );
                   } else {
-                    if (snapshot
-                        .data
-                        .docs[index]['translatedfield'][selectedLanguageCode]
-                        .isEmpty) {
+                    if (selectedLanguageCode == 'en') {
                       return MessageTile(
-                        message: "Typing....",
+                        message: snapshot.data.docs[index]['message'],
                         sender: snapshot.data.docs[index]['sender'],
                         sentByMe: widget.userName ==
                             snapshot.data.docs[index]['sender'],
+                        time: snapshot.data.docs[index]['time'],
                       );
                     } else {
-                      return MessageTile(
-                        message: snapshot.data.docs[index]['translatedfield']
-                            [selectedLanguageCode],
-                        sender: snapshot.data.docs[index]['sender'],
-                        sentByMe: widget.userName ==
-                            snapshot.data.docs[index]['sender'],
-                      );
+                      if (snapshot
+                          .data
+                          .docs[index]['translatedfield'][selectedLanguageCode]
+                          .isEmpty) {
+                        return MessageTile(
+                          message: "Typing....",
+                          sender: snapshot.data.docs[index]['sender'],
+                          sentByMe: widget.userName ==
+                              snapshot.data.docs[index]['sender'],
+                          time: snapshot.data.docs[index]['time'],
+                          //get time
+                        );
+                      } else {
+                        return MessageTile(
+                          message: snapshot.data.docs[index]['translatedfield']
+                              [selectedLanguageCode],
+                          sender: snapshot.data.docs[index]['sender'],
+                          sentByMe: widget.userName ==
+                              snapshot.data.docs[index]['sender'],
+                          time: snapshot.data.docs[index]['time'],
+                        );
+                      }
                     }
                   }
                 },
