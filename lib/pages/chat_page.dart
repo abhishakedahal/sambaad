@@ -43,19 +43,31 @@ class ChatPage extends StatefulWidget {
   State<ChatPage> createState() => _ChatPageState();
 }
 
-class _ChatPageState extends State<ChatPage> {
+class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
   Stream<QuerySnapshot>? chats;
   TextEditingController messageController = TextEditingController();
   String admin = "";
   String selectedLanguageCode = "en";
   bool isEncryptionEnabled = false;
+  late AnimationController _controller;
 
   @override
   void initState() {
     getSavedLanguage();
     getChatandAdmin();
     getEncryptionState();
+    _controller = AnimationController(
+      duration: const Duration(seconds: 3),
+      vsync: this,
+    );
+    _controller.repeat();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   getChatandAdmin() {
@@ -387,9 +399,12 @@ class _ChatPageState extends State<ChatPage> {
           });
           saveLanguage(value);
         },
-        icon: const Icon(
-          Icons.language,
-          color: Color.fromARGB(255, 138, 231, 141),
+        icon: RotationTransition(
+          turns: Tween(begin: 0.0, end: 1.0).animate(_controller),
+          child: const Icon(
+            Icons.language,
+            color: Color.fromARGB(255, 138, 231, 141),
+          ),
         ),
         itemBuilder: (BuildContext context) => <PopupMenuItem<String>>[
           PopupMenuItem(
@@ -445,23 +460,25 @@ class _ChatPageState extends State<ChatPage> {
         ],
       );
     } else {
-      return IconButton(
-        icon: const Icon(
-          Icons.language,
-          color: Colors.white,
-        ),
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return const AlertDialog(
-                content: Text(
-                    "⛔ Translation is disabled because you have enabled end to end encryption!! Please turn off E2EE in order to use translation functionality."),
+      return RotationTransition(
+          turns: Tween(begin: 0.0, end: 1.0).animate(_controller),
+          child: IconButton(
+            icon: const Icon(
+              Icons.language,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return const AlertDialog(
+                    content: Text(
+                        "⛔ Translation is disabled because you have enabled end to end encryption!! Please turn off E2EE in order to use translation functionality."),
+                  );
+                },
               );
             },
-          );
-        },
-      );
+          ));
     }
   }
 }
