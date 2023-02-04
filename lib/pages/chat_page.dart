@@ -48,11 +48,13 @@ class _ChatPageState extends State<ChatPage> {
   TextEditingController messageController = TextEditingController();
   String admin = "";
   String selectedLanguageCode = "en";
+  bool isEncrypted = false;
 
   @override
   void initState() {
     getSavedLanguage();
     getChatandAdmin();
+     getEncryptionState();
     super.initState();
   }
 
@@ -81,6 +83,19 @@ class _ChatPageState extends State<ChatPage> {
           preferences.getString('selectedLanguageCode') ?? 'en';
     });
   }
+
+  void saveEncryptionState(bool isEncrypted) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.setBool('isEncrypted', isEncrypted);
+  }
+
+void getEncryptionState() async {
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  setState(() {
+    isEncrypted = preferences.getBool('isEncrypted') ?? false;
+  });
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -168,6 +183,43 @@ class _ChatPageState extends State<ChatPage> {
               ),
             ],
           ),
+          IconButton(
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: const Text("🔒 Encryption"),
+                    content: Text(isEncrypted
+                        ? "⚠️ Do you want to disable end-to-end encryption?"
+                        : "Do you want to enable end-to-end encryption? Doing so will disable the translation functionality."),
+                    actions: [
+                      ElevatedButton(
+                        child: const Text("No"),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      ElevatedButton(
+                        child: const Text("Yes"),
+                        onPressed: () {
+                          setState(() {
+                            isEncrypted = !isEncrypted;
+                          });
+                          saveEncryptionState(isEncrypted);
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+            icon: Icon(
+              Icons.lock,
+              color: isEncrypted ? Color.fromARGB(255, 43, 255, 0) : null,
+            ),
+          ),
         ],
       ),
       body: Column(
@@ -232,16 +284,30 @@ class _ChatPageState extends State<ChatPage> {
 
                 itemCount: snapshot.data.docs.length,
                 itemBuilder: (context, index) {
-                  if (widget.userName == snapshot.data.docs[index]['sender']) {
-                    return MessageTile(
-                      message: snapshot.data.docs[index]['message'],
-                      sender: snapshot.data.docs[index]['sender'],
-                      sentByMe: widget.userName ==
-                          snapshot.data.docs[index]['sender'],
-                      time: snapshot.data.docs[index]['time'],
-                    );
+                  if (isEncrypted) {
+                    try {
+                      return MessageTile(
+                        message: AESEncryption.decryptAES(
+                            snapshot.data.docs[index]['message']),
+                        sender: snapshot.data.docs[index]['sender'],
+                        sentByMe: widget.userName ==
+                            snapshot.data.docs[index]['sender'],
+                        time: snapshot.data.docs[index]['time'],
+                      );
+                    } catch (e) {
+                      return MessageTile(
+                        message: snapshot.data.docs[index]['message'],
+                        sender: snapshot.data.docs[index]['sender'],
+                        sentByMe: widget.userName ==
+                            snapshot.data.docs[index]['sender'],
+                        time: snapshot.data.docs[index]['time'],
+                      );
+                    }
+
+                    // }
                   } else {
-                    if (selectedLanguageCode == 'en') {
+                    if (widget.userName ==
+                        snapshot.data.docs[index]['sender']) {
                       return MessageTile(
                         message: snapshot.data.docs[index]['message'],
                         sender: snapshot.data.docs[index]['sender'],
@@ -250,6 +316,15 @@ class _ChatPageState extends State<ChatPage> {
                         time: snapshot.data.docs[index]['time'],
                       );
                     } else {
+                      // if (selectedLanguageCode == 'en') {
+                      //   return MessageTile(
+                      //     message: snapshot.data.docs[index]['message'],
+                      //     sender: snapshot.data.docs[index]['sender'],
+                      //     sentByMe: widget.userName ==
+                      //         snapshot.data.docs[index]['sender'],
+                      //     time: snapshot.data.docs[index]['time'],
+                      //   );
+                      // } else {
                       if (snapshot
                           .data
                           .docs[index]['translatedfield'][selectedLanguageCode]
@@ -282,10 +357,22 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   sendMessage() {
-    if (messageController.text.isNotEmpty) {
+    if (messageController.text.isNotEmpty && !isEncrypted) {
       Map<String, dynamic> chatMessageMap = {
         "message": messageController.text,
         // "message": AESEncryption.encryptAES(messageController.text),
+
+        "sender": widget.userName,
+        "time": DateTime.now().millisecondsSinceEpoch,
+      };
+
+      DatabaseServices().sendMessage(widget.groupId, chatMessageMap);
+      setState(() {
+        messageController.clear();
+      });
+    } else {
+      Map<String, dynamic> chatMessageMap = {
+        "message": AESEncryption.encryptAES(messageController.text),
         "sender": widget.userName,
         "time": DateTime.now().millisecondsSinceEpoch,
       };
