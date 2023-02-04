@@ -233,8 +233,12 @@ class _ChatPageState extends State<ChatPage> {
                   if (isEncryptionEnabled) {
                     try {
                       return MessageTile(
-                        message: Text(AESEncryption.decryptAES(
-                            snapshot.data.docs[index]['message']), textAlign: TextAlign.start, style: const TextStyle(color: Colors.white,fontSize: 16)),
+                        message: Text(
+                            AESEncryption.decryptAES(
+                                snapshot.data.docs[index]['message']),
+                            textAlign: TextAlign.start,
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 16)),
                         sender: snapshot.data.docs[index]['sender'],
                         sentByMe: widget.userName ==
                             snapshot.data.docs[index]['sender'],
@@ -242,7 +246,10 @@ class _ChatPageState extends State<ChatPage> {
                       );
                     } catch (e) {
                       return MessageTile(
-                        message: Text(snapshot.data.docs[index]['message'], textAlign: TextAlign.start, style: const TextStyle(color: Colors.white,fontSize: 16)),
+                        message: Text(snapshot.data.docs[index]['message'],
+                            textAlign: TextAlign.start,
+                            style:
+                                const TextStyle(color: Colors.white, fontSize: 16)),
                         sender: snapshot.data.docs[index]['sender'],
                         sentByMe: widget.userName ==
                             snapshot.data.docs[index]['sender'],
@@ -255,7 +262,21 @@ class _ChatPageState extends State<ChatPage> {
                     if (widget.userName ==
                         snapshot.data.docs[index]['sender']) {
                       return MessageTile(
-                        message: Text(snapshot.data.docs[index]['message'], textAlign: TextAlign.start, style: const TextStyle(color: Colors.white,fontSize: 16)),
+                        message: (snapshot.data.docs[index]
+                                        ['isMessageEncrypted'] ==
+                                    true) &&
+                                (!isEncryptionEnabled)
+                            ? const Text(
+                                'You cannot view this message as it is encrypted. Turn on encryption to view it.',
+                                textAlign: TextAlign.start,
+                                style: TextStyle(
+                                  fontStyle: FontStyle.italic,
+                                  color: Colors.white,
+                                ))
+                            : Text(snapshot.data.docs[index]['message'],
+                                textAlign: TextAlign.start,
+                                style: const TextStyle(
+                                    color: Colors.white, fontSize: 16)),
                         sender: snapshot.data.docs[index]['sender'],
                         sentByMe: widget.userName ==
                             snapshot.data.docs[index]['sender'],
@@ -278,7 +299,7 @@ class _ChatPageState extends State<ChatPage> {
                             'You cannot view this message as it is encrypted. Turn on encryption to view it.',
                             style: TextStyle(
                               fontStyle: FontStyle.italic,
-                              color: Colors.red,
+                              color: Colors.white,
                             ),
                           ),
                           sender: snapshot.data.docs[index]['sender'],
@@ -293,7 +314,10 @@ class _ChatPageState extends State<ChatPage> {
                                 [selectedLanguageCode]
                             .isEmpty) {
                           return MessageTile(
-                            message: const Text('Typing...', textAlign: TextAlign.start, style: TextStyle(color: Colors.white,fontSize: 16)),
+                            message: const Text('Typing...',
+                                textAlign: TextAlign.start,
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 16)),
                             sender: snapshot.data.docs[index]['sender'],
                             sentByMe: widget.userName ==
                                 snapshot.data.docs[index]['sender'],
@@ -302,8 +326,12 @@ class _ChatPageState extends State<ChatPage> {
                           );
                         } else {
                           return MessageTile(
-                            message: Text(snapshot.data.docs[index]
-                                ['translatedfield'][selectedLanguageCode], textAlign: TextAlign.start, style: const TextStyle(color: Colors.white,fontSize: 16)),
+                            message: Text(
+                                snapshot.data.docs[index]['translatedfield']
+                                    [selectedLanguageCode],
+                                textAlign: TextAlign.start,
+                                style: const TextStyle(
+                                    color: Colors.white, fontSize: 16)),
                             sender: snapshot.data.docs[index]['sender'],
                             sentByMe: widget.userName ==
                                 snapshot.data.docs[index]['sender'],
