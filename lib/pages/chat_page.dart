@@ -48,7 +48,7 @@ class _ChatPageState extends State<ChatPage> {
   TextEditingController messageController = TextEditingController();
   String admin = "";
   String selectedLanguageCode = "en";
-  bool isEncrypted = false;
+  bool isEncryptionEnabled = false;
 
   @override
   void initState() {
@@ -84,15 +84,15 @@ class _ChatPageState extends State<ChatPage> {
     });
   }
 
-  void saveEncryptionState(bool isEncrypted) async {
+  void saveEncryptionState(bool isEncryptionEnabled) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    preferences.setBool('isEncrypted', isEncrypted);
+    preferences.setBool('isEncryptionEnabled', isEncryptionEnabled);
   }
 
   void getEncryptionState() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
-      isEncrypted = preferences.getBool('isEncrypted') ?? false;
+      isEncryptionEnabled = preferences.getBool('isEncryptionEnabled') ?? false;
     });
   }
 
@@ -123,7 +123,7 @@ class _ChatPageState extends State<ChatPage> {
                     ));
               },
               icon: const Icon(Icons.info)),
-          languageButton(isEncrypted, context),
+          languageButton(isEncryptionEnabled, context),
           IconButton(
             onPressed: () {
               showDialog(
@@ -131,7 +131,7 @@ class _ChatPageState extends State<ChatPage> {
                 builder: (BuildContext context) {
                   return AlertDialog(
                     title: const Text("🔒 Encryption"),
-                    content: Text(isEncrypted
+                    content: Text(isEncryptionEnabled
                         ? "⚠️ Do you want to disable end-to-end encryption?"
                         : "Do you want to enable end-to-end encryption? Doing so will disable the translation functionality."),
                     actions: [
@@ -143,11 +143,14 @@ class _ChatPageState extends State<ChatPage> {
                       ),
                       ElevatedButton(
                         child: const Text("Yes"),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green,
+                        ),
                         onPressed: () {
                           setState(() {
-                            isEncrypted = !isEncrypted;
+                            isEncryptionEnabled = !isEncryptionEnabled;
                           });
-                          saveEncryptionState(isEncrypted);
+                          saveEncryptionState(isEncryptionEnabled);
                           Navigator.of(context).pop();
                         },
                       ),
@@ -158,7 +161,9 @@ class _ChatPageState extends State<ChatPage> {
             },
             icon: Icon(
               Icons.lock,
-              color: isEncrypted ? Color.fromARGB(255, 43, 255, 0) : null,
+              color: isEncryptionEnabled
+                  ? Color.fromARGB(255, 43, 255, 0)
+                  : Colors.red,
             ),
           ),
         ],
@@ -225,11 +230,11 @@ class _ChatPageState extends State<ChatPage> {
 
                 itemCount: snapshot.data.docs.length,
                 itemBuilder: (context, index) {
-                  if (isEncrypted) {
+                  if (isEncryptionEnabled) {
                     try {
                       return MessageTile(
-                        message: AESEncryption.decryptAES(
-                            snapshot.data.docs[index]['message']),
+                        message: Text(AESEncryption.decryptAES(
+                            snapshot.data.docs[index]['message']), textAlign: TextAlign.start, style: const TextStyle(color: Colors.white,fontSize: 16)),
                         sender: snapshot.data.docs[index]['sender'],
                         sentByMe: widget.userName ==
                             snapshot.data.docs[index]['sender'],
@@ -237,7 +242,7 @@ class _ChatPageState extends State<ChatPage> {
                       );
                     } catch (e) {
                       return MessageTile(
-                        message: snapshot.data.docs[index]['message'],
+                        message: Text(snapshot.data.docs[index]['message'], textAlign: TextAlign.start, style: const TextStyle(color: Colors.white,fontSize: 16)),
                         sender: snapshot.data.docs[index]['sender'],
                         sentByMe: widget.userName ==
                             snapshot.data.docs[index]['sender'],
@@ -250,7 +255,7 @@ class _ChatPageState extends State<ChatPage> {
                     if (widget.userName ==
                         snapshot.data.docs[index]['sender']) {
                       return MessageTile(
-                        message: snapshot.data.docs[index]['message'],
+                        message: Text(snapshot.data.docs[index]['message'], textAlign: TextAlign.start, style: const TextStyle(color: Colors.white,fontSize: 16)),
                         sender: snapshot.data.docs[index]['sender'],
                         sentByMe: widget.userName ==
                             snapshot.data.docs[index]['sender'],
@@ -266,27 +271,45 @@ class _ChatPageState extends State<ChatPage> {
                       //     time: snapshot.data.docs[index]['time'],
                       //   );
                       // } else {
-                      if (snapshot
-                          .data
-                          .docs[index]['translatedfield'][selectedLanguageCode]
-                          .isEmpty) {
+                      if (snapshot.data.docs[index]['isMessageEncrypted'] ==
+                          true) {
                         return MessageTile(
-                          message: "Typing....",
+                          message: const Text(
+                            'You cannot view this message as it is encrypted. Turn on encryption to view it.',
+                            style: TextStyle(
+                              fontStyle: FontStyle.italic,
+                              color: Colors.red,
+                            ),
+                          ),
                           sender: snapshot.data.docs[index]['sender'],
                           sentByMe: widget.userName ==
                               snapshot.data.docs[index]['sender'],
                           time: snapshot.data.docs[index]['time'],
-                          //get time
                         );
                       } else {
-                        return MessageTile(
-                          message: snapshot.data.docs[index]['translatedfield']
-                              [selectedLanguageCode],
-                          sender: snapshot.data.docs[index]['sender'],
-                          sentByMe: widget.userName ==
-                              snapshot.data.docs[index]['sender'],
-                          time: snapshot.data.docs[index]['time'],
-                        );
+                        if (snapshot
+                            .data
+                            .docs[index]['translatedfield']
+                                [selectedLanguageCode]
+                            .isEmpty) {
+                          return MessageTile(
+                            message: const Text('Typing...', textAlign: TextAlign.start, style: TextStyle(color: Colors.white,fontSize: 16)),
+                            sender: snapshot.data.docs[index]['sender'],
+                            sentByMe: widget.userName ==
+                                snapshot.data.docs[index]['sender'],
+                            time: snapshot.data.docs[index]['time'],
+                            //get time
+                          );
+                        } else {
+                          return MessageTile(
+                            message: Text(snapshot.data.docs[index]
+                                ['translatedfield'][selectedLanguageCode], textAlign: TextAlign.start, style: const TextStyle(color: Colors.white,fontSize: 16)),
+                            sender: snapshot.data.docs[index]['sender'],
+                            sentByMe: widget.userName ==
+                                snapshot.data.docs[index]['sender'],
+                            time: snapshot.data.docs[index]['time'],
+                          );
+                        }
                       }
                     }
                   }
@@ -298,11 +321,12 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   sendMessage() {
-    if (messageController.text.isNotEmpty && !isEncrypted) {
+    if (messageController.text.isNotEmpty && !isEncryptionEnabled) {
       Map<String, dynamic> chatMessageMap = {
         "message": messageController.text,
         "sender": widget.userName,
         "time": DateTime.now().millisecondsSinceEpoch,
+        "isMessageEncrypted": false,
       };
 
       DatabaseServices().sendMessage(widget.groupId, chatMessageMap);
@@ -314,6 +338,7 @@ class _ChatPageState extends State<ChatPage> {
         "message": AESEncryption.encryptAES(messageController.text),
         "sender": widget.userName,
         "time": DateTime.now().millisecondsSinceEpoch,
+        "isMessageEncrypted": true,
       };
 
       DatabaseServices().sendMessage(widget.groupId, chatMessageMap);
@@ -323,8 +348,8 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
-  Widget languageButton(bool isEncrypted, BuildContext context) {
-    if (!isEncrypted) {
+  Widget languageButton(bool isEncryptionEnabled, BuildContext context) {
+    if (!isEncryptionEnabled) {
       return PopupMenuButton<String>(
         onSelected: (value) {
           setState(() {
@@ -334,7 +359,7 @@ class _ChatPageState extends State<ChatPage> {
         },
         icon: const Icon(
           Icons.language,
-          color: Colors.white,
+          color: Color.fromARGB(255, 138, 231, 141),
         ),
         itemBuilder: (BuildContext context) => <PopupMenuItem<String>>[
           PopupMenuItem(
@@ -393,7 +418,7 @@ class _ChatPageState extends State<ChatPage> {
       return IconButton(
         icon: const Icon(
           Icons.language,
-          color: Colors.white,
+          color: Color.fromARGB(255, 238, 93, 93),
         ),
         onPressed: () {
           showDialog(
@@ -401,7 +426,7 @@ class _ChatPageState extends State<ChatPage> {
             builder: (BuildContext context) {
               return const AlertDialog(
                 content: Text(
-                    "Translation is disabled because you have enabled end to end encryption!! Please turn off E2EE in order to use translation functionality."),
+                    "⛔ Translation is disabled because you have enabled end to end encryption!! Please turn off E2EE in order to use translation functionality."),
               );
             },
           );

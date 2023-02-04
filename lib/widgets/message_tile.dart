@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class MessageTile extends StatefulWidget {
-  final String message;
+  final Widget message;
   final String sender;
   final bool sentByMe;
   final int time;
@@ -68,9 +68,10 @@ class _MessageTileState extends State<MessageTile> {
             const SizedBox(
               height: 8,
             ),
-            Text(widget.message,
-                textAlign: TextAlign.start,
-                style: const TextStyle(fontSize: 16, color: Colors.white)),
+            // Text(widget.message,
+            //     textAlign: TextAlign.start,
+            //     style: const TextStyle(fontSize: 16, color: Colors.white)),
+            widget.message,
             const SizedBox(height: 8),
             Text(
               dateDifference(),
