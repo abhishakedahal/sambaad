@@ -57,10 +57,19 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
     getChatandAdmin();
     getEncryptionState();
     _controller = AnimationController(
-      duration: const Duration(seconds: 3),
+      duration: const Duration(milliseconds:2000),
       vsync: this,
     );
-    _controller.repeat();
+    // _controller.repeat();
+    _controller.forward();
+_controller.addStatusListener((status) {
+  if (status == AnimationStatus.completed) {
+    Future.delayed(Duration(seconds: 4), () {
+      _controller.forward(from: 0.0);
+    });
+  }
+});
+
     super.initState();
   }
 
@@ -217,11 +226,15 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
                       color: Theme.of(context).primaryColor,
                       borderRadius: BorderRadius.circular(30),
                     ),
-                    child: const Center(
-                        child: Icon(
-                      Icons.send,
-                      color: Colors.white,
-                    )),
+                    child: Center(
+                      child: RotationTransition(
+                        turns: Tween(begin: 0.0, end: 1.0).animate(_controller),
+                        child: const Icon(
+                          Icons.send,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
                   ),
                 )
               ]),
