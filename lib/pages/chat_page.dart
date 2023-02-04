@@ -111,18 +111,6 @@ class _ChatPageState extends State<ChatPage> {
               icon: const Icon(
                 Icons.search,
               )),
-          IconButton(
-              onPressed: () {
-                nextScreen(
-                    context,
-                    GroupInfo(
-                      groupId: widget.groupId,
-                      groupName: widget.groupName,
-                      adminName: admin,
-                      userName: widget.userName,
-                    ));
-              },
-              icon: const Icon(Icons.info)),
           languageButton(isEncryptionEnabled, context),
           IconButton(
             onPressed: () {
@@ -166,6 +154,18 @@ class _ChatPageState extends State<ChatPage> {
                   : Colors.white,
             ),
           ),
+          IconButton(
+              onPressed: () {
+                nextScreen(
+                    context,
+                    GroupInfo(
+                      groupId: widget.groupId,
+                      groupName: widget.groupName,
+                      adminName: admin,
+                      userName: widget.userName,
+                    ));
+              },
+              icon: const Icon(Icons.info)),
         ],
       ),
       body: Column(
@@ -248,8 +248,8 @@ class _ChatPageState extends State<ChatPage> {
                       return MessageTile(
                         message: Text(snapshot.data.docs[index]['message'],
                             textAlign: TextAlign.start,
-                            style:
-                                const TextStyle(color: Colors.white, fontSize: 16)),
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 16)),
                         sender: snapshot.data.docs[index]['sender'],
                         sentByMe: widget.userName ==
                             snapshot.data.docs[index]['sender'],
@@ -268,7 +268,7 @@ class _ChatPageState extends State<ChatPage> {
                                 (!isEncryptionEnabled)
                             ? const Text(
                                 // 'You cannot view this message as it is encrypted. Turn on encryption to view it.',
-                                '🔒',
+                                '🔒 This message is encrypted.',
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
                                   fontStyle: FontStyle.italic,
@@ -298,7 +298,7 @@ class _ChatPageState extends State<ChatPage> {
                         return MessageTile(
                           message: const Text(
                             // 'You cannot view this message as it is encrypted. Turn on encryption to view it.',
-                            '🔒',
+                            '🔒 This message is encrypted.',
                             style: TextStyle(
                               fontStyle: FontStyle.italic,
                               color: Colors.white,
