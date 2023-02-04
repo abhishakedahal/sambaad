@@ -54,7 +54,7 @@ class _ChatPageState extends State<ChatPage> {
   void initState() {
     getSavedLanguage();
     getChatandAdmin();
-     getEncryptionState();
+    getEncryptionState();
     super.initState();
   }
 
@@ -89,13 +89,12 @@ class _ChatPageState extends State<ChatPage> {
     preferences.setBool('isEncrypted', isEncrypted);
   }
 
-void getEncryptionState() async {
-  SharedPreferences preferences = await SharedPreferences.getInstance();
-  setState(() {
-    isEncrypted = preferences.getBool('isEncrypted') ?? false;
-  });
-}
-
+  void getEncryptionState() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    setState(() {
+      isEncrypted = preferences.getBool('isEncrypted') ?? false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -124,65 +123,7 @@ void getEncryptionState() async {
                     ));
               },
               icon: const Icon(Icons.info)),
-          PopupMenuButton<String>(
-            onSelected: (value) {
-              setState(() {
-                selectedLanguageCode = value;
-              });
-              saveLanguage(value);
-            },
-            icon: const Icon(
-              Icons.language,
-              color: Colors.white,
-            ),
-            itemBuilder: (BuildContext context) => <PopupMenuItem<String>>[
-              PopupMenuItem(
-                value: "ne",
-                child: Container(
-                  color: selectedLanguageCode == 'ne'
-                      ? Theme.of(context).primaryColor
-                      : null,
-                  child: const Text("Nepali"),
-                ),
-              ),
-              PopupMenuItem(
-                value: "en",
-                child: Container(
-                  color: selectedLanguageCode == 'en'
-                      ? Theme.of(context).primaryColor
-                      : null,
-                  child: const Text("English"),
-                ),
-              ),
-              PopupMenuItem(
-                value: "fr",
-                child: Container(
-                  color: selectedLanguageCode == 'fr'
-                      ? Theme.of(context).primaryColor
-                      : null,
-                  child: const Text("French"),
-                ),
-              ),
-              PopupMenuItem(
-                value: "de",
-                child: Container(
-                  color: selectedLanguageCode == 'de'
-                      ? Theme.of(context).primaryColor
-                      : null,
-                  child: const Text("German"),
-                ),
-              ),
-              PopupMenuItem(
-                value: "zh",
-                child: Container(
-                  color: selectedLanguageCode == 'zh'
-                      ? Theme.of(context).primaryColor
-                      : null,
-                  child: const Text("Chinese"),
-                ),
-              ),
-            ],
-          ),
+          languageButton(isEncrypted, context),
           IconButton(
             onPressed: () {
               showDialog(
@@ -360,8 +301,6 @@ void getEncryptionState() async {
     if (messageController.text.isNotEmpty && !isEncrypted) {
       Map<String, dynamic> chatMessageMap = {
         "message": messageController.text,
-        // "message": AESEncryption.encryptAES(messageController.text),
-
         "sender": widget.userName,
         "time": DateTime.now().millisecondsSinceEpoch,
       };
@@ -381,6 +320,93 @@ void getEncryptionState() async {
       setState(() {
         messageController.clear();
       });
+    }
+  }
+
+  Widget languageButton(bool isEncrypted, BuildContext context) {
+    if (!isEncrypted) {
+      return PopupMenuButton<String>(
+        onSelected: (value) {
+          setState(() {
+            selectedLanguageCode = value;
+          });
+          saveLanguage(value);
+        },
+        icon: const Icon(
+          Icons.language,
+          color: Colors.white,
+        ),
+        itemBuilder: (BuildContext context) => <PopupMenuItem<String>>[
+          PopupMenuItem(
+            value: "ne",
+            child: Container(
+              alignment: Alignment.center,
+              color: selectedLanguageCode == 'ne'
+                  ? Theme.of(context).primaryColor
+                  : null,
+              child: const Text("🇳🇵 Nepali", style: TextStyle(fontSize: 20)),
+            ),
+          ),
+          PopupMenuItem(
+            value: "en",
+            child: Container(
+              alignment: Alignment.center,
+              color: selectedLanguageCode == 'en'
+                  ? Theme.of(context).primaryColor
+                  : null,
+              child: const Text("🇺🇸 English", style: TextStyle(fontSize: 20)),
+            ),
+          ),
+          PopupMenuItem(
+            value: "fr",
+            child: Container(
+              alignment: Alignment.center,
+              color: selectedLanguageCode == 'fr'
+                  ? Theme.of(context).primaryColor
+                  : null,
+              child: const Text("🇫🇷 French", style: TextStyle(fontSize: 20)),
+            ),
+          ),
+          PopupMenuItem(
+            value: "de",
+            child: Container(
+              alignment: Alignment.center,
+              color: selectedLanguageCode == 'de'
+                  ? Theme.of(context).primaryColor
+                  : null,
+              child: const Text("🇩🇪 German", style: TextStyle(fontSize: 20)),
+            ),
+          ),
+          PopupMenuItem(
+            value: "zh",
+            child: Container(
+              alignment: Alignment.center,
+              color: selectedLanguageCode == 'zh'
+                  ? Theme.of(context).primaryColor
+                  : null,
+              child: const Text("🇨🇳 Chinese", style: TextStyle(fontSize: 20)),
+            ),
+          ),
+        ],
+      );
+    } else {
+      return IconButton(
+        icon: const Icon(
+          Icons.language,
+          color: Colors.white,
+        ),
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return const AlertDialog(
+                content: Text(
+                    "Translation is disabled because you have enabled end to end encryption!! Please turn off E2EE in order to use translation functionality."),
+              );
+            },
+          );
+        },
+      );
     }
   }
 }
