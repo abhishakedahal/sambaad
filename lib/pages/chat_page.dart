@@ -57,7 +57,7 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
     getChatandAdmin();
     getEncryptionState();
     _controller = AnimationController(
-      duration: const Duration(milliseconds:2000),
+      duration: const Duration(milliseconds:1000),
       vsync: this,
     );
     // _controller.repeat();
@@ -146,6 +146,9 @@ _controller.addStatusListener((status) {
                     actions: [
                       ElevatedButton(
                         child: const Text("No"),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.grey,
+                        ),
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
@@ -153,7 +156,7 @@ _controller.addStatusListener((status) {
                       ElevatedButton(
                         child: const Text("Yes"),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.green,
+                          backgroundColor: Theme.of(context).primaryColor,
                         ),
                         onPressed: () {
                           setState(() {
