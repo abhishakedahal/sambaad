@@ -94,14 +94,14 @@ class _MessageTileState extends State<MessageTile> {
         .toUtc()
         .add(Duration(hours: 5, minutes: 45));
     var currentTime = DateTime.now();
-    var difference = currentTime.difference(widgetTime).inDays;
+    var difference = currentTime.difference(widgetTime).inMinutes;
 
-    if (difference == 0) {
-      return DateFormat.jm().format(widgetTime);
-    } else if (difference == 1) {
-      return "Yesterday at ${DateFormat.jm().format(widgetTime)}";
+    if (difference <= 60) {
+      return "${DateFormat.jm().format(widgetTime)}";
+    } else if (difference > 60 && difference < 1440) {
+      return "${(difference / 60).floor()} hours ago";
     } else {
-      return "$difference days ago";
+      return "${DateFormat.yMMMd().format(widgetTime)} at ${DateFormat.jm().format(widgetTime)}";
     }
   }
 }
