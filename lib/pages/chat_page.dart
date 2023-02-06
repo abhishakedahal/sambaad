@@ -57,18 +57,18 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
     getChatandAdmin();
     getEncryptionState();
     _controller = AnimationController(
-      duration: const Duration(milliseconds:1000),
+      duration: const Duration(milliseconds: 1000),
       vsync: this,
     );
     // _controller.repeat();
     _controller.forward();
-_controller.addStatusListener((status) {
-  if (status == AnimationStatus.completed) {
-    Future.delayed(Duration(seconds: 4), () {
-      _controller.forward(from: 0.0);
+    _controller.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        Future.delayed(Duration(seconds: 4), () {
+          _controller.forward(from: 0.0);
+        });
+      }
     });
-  }
-});
 
     super.initState();
   }
@@ -355,18 +355,53 @@ _controller.addStatusListener((status) {
                             //get time
                           );
                         } else {
-                          return MessageTile(
-                            message: Text(
-                                snapshot.data.docs[index]['translatedfield']
-                                    [selectedLanguageCode],
-                                textAlign: TextAlign.start,
-                                style: const TextStyle(
-                                    color: Colors.white, fontSize: 16)),
-                            sender: snapshot.data.docs[index]['sender'],
-                            sentByMe: widget.userName ==
-                                snapshot.data.docs[index]['sender'],
-                            time: snapshot.data.docs[index]['time'],
-                          );
+                          if (snapshot.data.docs[index]['attribute_scores']
+                                  ["PROFANITY"] ==
+                              null) {
+                            return MessageTile(
+                              message: const Text("Typing...",
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontStyle: FontStyle.italic,
+                                  )),
+                              sender: snapshot.data.docs[index]['sender'],
+                              sentByMe: widget.userName ==
+                                  snapshot.data.docs[index]['sender'],
+                              time: snapshot.data.docs[index]['time'],
+                            );
+                          } else {
+                            if (snapshot.data.docs[index]['attribute_scores']
+                                    ['PROFANITY'] != null && snapshot.data.docs[index]['attribute_scores']
+                                    ['PROFANITY'] >
+                                0.6) {
+                              return MessageTile(
+                                message: const Text(
+                                    "🔞This message contains potentially offensive content. So it has been removed.🔞",
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 16, fontStyle: FontStyle.italic)),
+                                sender: snapshot.data.docs[index]['sender'],
+                                sentByMe: widget.userName ==
+                                    snapshot.data.docs[index]['sender'],
+                                time: snapshot.data.docs[index]['time'],
+                              );
+                            } else {
+                              return MessageTile(
+                                message: Text(
+                                    snapshot.data.docs[index]['translatedfield']
+                                        [selectedLanguageCode],
+                                    textAlign: TextAlign.start,
+                                    style: const TextStyle(
+                                        color: Colors.white, fontSize: 16)),
+                                sender: snapshot.data.docs[index]['sender'],
+                                sentByMe: widget.userName ==
+                                    snapshot.data.docs[index]['sender'],
+                                time: snapshot.data.docs[index]['time'],
+                              );
+                            }
+                          }
                         }
                       }
                     }
