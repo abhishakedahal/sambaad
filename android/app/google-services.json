@@ -1,41 +1,41 @@
 {
     "project_info": {
-      "project_number": "349620511454",
-      "project_id": "sambaad-4",
-      "storage_bucket": "sambaad-4.appspot.com"
+      "project_number": "641169153542",
+      "project_id": "sambaad-kushal",
+      "storage_bucket": "sambaad-kushal.appspot.com"
     },
     "client": [
       {
         "client_info": {
-          "mobilesdk_app_id": "1:349620511454:android:140f93ad4707c4bed6584f",
+          "mobilesdk_app_id": "1:641169153542:android:1033e4c96887bcbef0ad87",
           "android_client_info": {
-            "package_name": "com.csit.sambaad4"
+            "package_name": "com.example.sambaad"
           }
         },
         "oauth_client": [
           {
-            "client_id": "349620511454-52t3he7mfjs5511vl4fomlu11aee7q1m.apps.googleusercontent.com",
+            "client_id": "641169153542-9d87m4e5qguupffn5kjo0a5b2kikeer1.apps.googleusercontent.com",
             "client_type": 1,
             "android_info": {
-              "package_name": "com.csit.sambaad4",
-              "certificate_hash": "c994194667e7154bc52c33bf62c3147f3c675a73"
+              "package_name": "com.example.sambaad",
+              "certificate_hash": "03451eb231d2a32b6cad526ac1ceded1cdf0b32c"
             }
           },
           {
-            "client_id": "349620511454-jhj3rrc578vfvtsd4m30dttq9sr3tsdl.apps.googleusercontent.com",
+            "client_id": "641169153542-ddh66chod8nd9j0eunk578kn9dnn1d6g.apps.googleusercontent.com",
             "client_type": 3
           }
         ],
         "api_key": [
           {
-            "current_key": "AIzaSyAFmFt8zlN6vwu21YjwKts5AzMXmaJQ-ys"
+            "current_key": "AIzaSyAeOZP9gBs9u1m6EGd9q64iin_t5gIl0BU"
           }
         ],
         "services": {
           "appinvite_service": {
             "other_platform_oauth_client": [
               {
-                "client_id": "349620511454-jhj3rrc578vfvtsd4m30dttq9sr3tsdl.apps.googleusercontent.com",
+                "client_id": "641169153542-ddh66chod8nd9j0eunk578kn9dnn1d6g.apps.googleusercontent.com",
                 "client_type": 3
               }
             ]
