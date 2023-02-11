@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sambaad/pages/profile_page.dart';
-import 'package:sambaad/pages/search_page.dart';
+// import 'package:sambaad/pages/search_page.dart';
 import 'package:sambaad/services/auth_services.dart';
-import 'package:sambaad/pages/BM_group_search.dart';
+import 'package:sambaad/pages/boyer_moore_group_search.dart';
 import 'package:sambaad/services/database_services.dart';
 import 'package:sambaad/widgets/group_title.dart';
 import 'package:sambaad/widgets/widgets.dart';

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -42,6 +43,11 @@ class _SearchPageState extends State<BMSearchPage> {
   void initState() {
     super.initState();
     getCurrentUserIdandName();
+    searchController.addListener(() {
+    if (searchController.text.isNotEmpty) {
+      initiateSearchMethod();
+    }
+  });
   }
 
   getCurrentUserIdandName() async {
@@ -122,11 +128,29 @@ class _SearchPageState extends State<BMSearchPage> {
     );
   }
 
-  initiateSearchMethod() async {
-    if (searchController.text.isNotEmpty) {
-      setState(() {
-        isLoading = true;
-      });
+//   initiateSearchMethod() async {
+//   if (searchController.text.isNotEmpty) {
+//     setState(() {
+//       isLoading = true;
+//     });
+//     Timer(const Duration(milliseconds: 1000), () async {
+//       await DatabaseServices().BMgroupSearchByName().then((snapshot) {
+//         setState(() {
+//           searchSnapshot = snapshot;
+//           isLoading = false;
+//           hasUserSearched = true;
+//         });
+//       });
+//     });
+//   }
+// }
+
+initiateSearchMethod() async {
+  if (searchController.text.isNotEmpty) {
+    setState(() {
+      isLoading = true;
+    });
+    await Future.delayed(const Duration(milliseconds: 700), () async {
       await DatabaseServices().BMgroupSearchByName().then((snapshot) {
         setState(() {
           searchSnapshot = snapshot;
@@ -134,8 +158,10 @@ class _SearchPageState extends State<BMSearchPage> {
           hasUserSearched = true;
         });
       });
-    }
+    });
   }
+}
+
 
   groupList() {
     return hasUserSearched
