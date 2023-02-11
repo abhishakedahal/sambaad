@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:sambaad/pages/profile_page.dart';
 import 'package:sambaad/pages/search_page.dart';
 import 'package:sambaad/services/auth_services.dart';
+import 'package:sambaad/pages/BM_group_search.dart';
 import 'package:sambaad/services/database_services.dart';
 import 'package:sambaad/widgets/group_title.dart';
 import 'package:sambaad/widgets/widgets.dart';
@@ -68,7 +69,7 @@ class _HomePageState extends State<HomePage> {
         actions: [
           IconButton(
               onPressed: () {
-                nextScreen(context, const SearchPage());
+                nextScreen(context, const BMSearchPage());
               },
               icon: const Icon(
                 Icons.search,

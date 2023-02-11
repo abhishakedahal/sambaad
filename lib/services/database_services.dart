@@ -83,6 +83,12 @@ class DatabaseServices {
     return groupCollection.where("groupName", isEqualTo: groupName).get();
   }
 
+   //Search group using Boyer Moore Algorithm
+  // ignore: non_constant_identifier_names
+  BMgroupSearchByName() {
+    return groupCollection.get();
+  }
+
   // function -> bool
   Future<bool> isUserJoined(
       String groupName, String groupId, String userName) async {
