@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:sambaad/pages/chat_page.dart';
 import 'package:sambaad/widgets/widgets.dart';
+import '../services/database_services.dart';
 
 class GroupTile extends StatefulWidget {
   final String userName;
@@ -16,6 +19,44 @@ class GroupTile extends StatefulWidget {
 }
 
 class _GroupTileState extends State<GroupTile> {
+
+String recentMessage = "";
+  String recentMessageSender = "";
+  late Timer _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    startTimer();
+  }
+
+  void startTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 0), (_) {
+      setState(() {
+        getRecentMessageAndSender();
+      });
+    });
+  }
+
+  getRecentMessageAndSender() {
+    DatabaseServices().getRecentMessage(widget.groupId).then((val) {
+      setState(() {
+        recentMessage = val;
+      });
+    });
+    DatabaseServices().getRecentMessageSender(widget.groupId).then((val) {
+      setState(() {
+        recentMessageSender = val;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -45,9 +86,13 @@ class _GroupTileState extends State<GroupTile> {
             widget.groupName,
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
-          subtitle: Text(
-            "Join the conversation as ${widget.userName}",
-            style: const TextStyle(fontSize: 13),
+          subtitle:
+          recentMessageSender == null || recentMessage == null
+              ? const Text("No recent messages")
+              :
+           Text(
+            "$recentMessageSender: $recentMessage",
+            style: const TextStyle(fontSize: 13, color: Colors.grey),
           ),
         ),
       ),
