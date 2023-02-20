@@ -214,7 +214,7 @@ class _LoginPageState extends State<LoginPage> {
           //saving the values to our shared preferences
           await HelperFunction.saveUserLoggedInStatus(true);
           await HelperFunction.saveUserEmailSF(email);
-          await HelperFunction.saveUserNameSF(snapshot.docs[0]['FullName']);
+          await HelperFunction.saveUserNameSF(snapshot.docs[0]['fullName']);
 
           nextScreenReplace(context, const HomePage());
           showSnackbar(context, Colors.green, "Logged in successfully.");
