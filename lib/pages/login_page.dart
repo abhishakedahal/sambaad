@@ -23,13 +23,26 @@ class _LoginPageState extends State<LoginPage> {
   String password = "";
   bool _isLoading = false;
   AuthService authService = AuthService();
+  bool? check3 = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: Color(0xFF69D1C5), toolbarHeight: 80,
+        centerTitle: true, //FFD046ph
+        title: Text(
+          "संवाद",
+          style: TextStyle(fontSize: 60),
+        ),
       ),
       // body: Center(child: Text("login page")),
+      bottomNavigationBar: BottomAppBar(
+        child: Container(
+          color: Color(0xFF69D1C5),
+          height: 55,
+        ),
+      ),
 
       body: _isLoading
           ? Center(
@@ -37,34 +50,36 @@ class _LoginPageState extends State<LoginPage> {
                   color: Theme.of(context).primaryColor),
             )
           : SingleChildScrollView(
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                child: Form(
-                  key: formKey,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      const Text("संवाद",
-                          style: TextStyle(
-                              fontSize: 40, fontWeight: FontWeight.bold)),
-                      const SizedBox(height: 5),
-                      //const Text("Login and start conversing instantly! No barriers, no limits!",
-                      const Text(
-                          "Stay connected with friends and family, no matter where you are.",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.w400)),
-                      const SizedBox(height: 20),
-                      Image.asset("assets/main1.png"),
-                      const SizedBox(height: 30),
-                      TextFormField(
+              child: Form(
+                key: formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    //const Text("Login and start conversing instantly! No barriers, no limits!",
+                    const SizedBox(height: 5),
+                    Image.asset("assets/main.png"),
+                    const SizedBox(height: 5),
+                    const Text("केही मीठो बात गरौँ",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.bold)),
+                    const SizedBox(height: 25),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 25, vertical: 0),
+                      child: TextFormField(
                         decoration: textInputDecoration.copyWith(
-                            labelText: "Email",
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  width: 2,
+                                  color: Color(0xFF69D1C5)), //<-- SEE HERE
+                              borderRadius: BorderRadius.circular(50.0),
+                            ),
+                            labelText: "Email",                           
                             prefixIcon: Icon(
                               Icons.email,
-                              color: Theme.of(context).primaryColor,
+                              color: Color.fromARGB(255, 0, 0, 0),
                             )),
                         onChanged: (val) {
                           setState(() {
@@ -80,16 +95,23 @@ class _LoginPageState extends State<LoginPage> {
                               : "Please enter a valid email";
                         },
                       ),
-
-                      const SizedBox(height: 15),
-
-                      TextFormField(
+                    ),
+                    const SizedBox(height: 14),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 25, vertical: 0),
+                      child: TextFormField(
                         obscureText: true,
                         decoration: textInputDecoration.copyWith(
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  width: 2, color: Color(0xFF69D1C5)),
+                              borderRadius: BorderRadius.circular(50.0),
+                            ),
                             labelText: "Password",
                             prefixIcon: Icon(
                               Icons.lock,
-                              color: Theme.of(context).primaryColor,
+                              color: Color.fromARGB(255, 0, 0, 0),
                             )),
                         validator: (val) {
                           if (val!.length < 6) {
@@ -105,48 +127,70 @@ class _LoginPageState extends State<LoginPage> {
                           });
                         },
                       ),
+                    ),
 
-                      const SizedBox(
-                        height: 20,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 13.0),
+                      child: CheckboxListTile(
+                        //checkbox positioned at right
+
+                        value: check3,
+
+                        controlAffinity: ListTileControlAffinity.leading,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            check3 = value;
+                          });
+                        },
+                        title: Text("Remember me"),
                       ),
-                      SizedBox(
+                    ),
+                    const SizedBox(
+                      height: 0,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 80, vertical: 0),
+                      child: SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                              primary: Theme.of(context).primaryColor,
+                              primary: Color(0xFF69D1C5),
                               elevation: 0,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(30))),
                           child: Padding(
-                            padding: const EdgeInsets.all(20.0),
-                            child: const Text("Sign In",
-                                style:
-                                    TextStyle(color: Colors.white, fontSize: 16)),
+                            padding: const EdgeInsets.all(17.10),
+                            child: const Text("LogIn",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w900)),
                           ),
                           onPressed: () {
                             login();
                           },
                         ),
                       ),
-                      const SizedBox(height: 10),
-                      Text.rich(TextSpan(
-                          text: "Don't have Account?  ",
-                          style: const TextStyle(
-                              color: Colors.black, fontSize: 14),
-                          children: <TextSpan>[
-                            TextSpan(
-                                text: "Register here",
-                                style: const TextStyle(
-                                    color: Color.fromARGB(255, 6, 68, 161),
-                                    decoration: TextDecoration.underline,
-                                    fontWeight: FontWeight.bold),
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () {
-                                    nextScreen(context, const RegisterPage());
-                                  })
-                          ]))
-                    ],
-                  ),
+                    ),
+                    const SizedBox(height: 1),
+                    Text.rich(TextSpan(
+                        text: "New to संवाद?  ",
+                        style:
+                            const TextStyle(color: Colors.black, fontSize: 14),
+                        children: <TextSpan>[
+                          TextSpan(
+                              text: "Create an account",
+                              style: const TextStyle(
+                                  color: Color.fromARGB(255, 6, 68, 161),
+                                  decoration: TextDecoration.underline,
+                                  fontWeight: FontWeight.bold),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  nextScreen(context, const RegisterPage());
+                                })
+                        ]))
+                  ],
                 ),
               ),
             ),
@@ -173,7 +217,7 @@ class _LoginPageState extends State<LoginPage> {
           await HelperFunction.saveUserNameSF(snapshot.docs[0]['fullName']);
 
           nextScreenReplace(context, const HomePage());
-          showSnackbar(context, Colors.green, "Login  successfully.");
+          showSnackbar(context, Colors.green, "Logged in successfully.");
         } else {
           showSnackbar(context, Colors.red, value);
           setState(() {
