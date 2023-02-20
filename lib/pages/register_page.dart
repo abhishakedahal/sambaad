@@ -48,7 +48,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         textAlign: TextAlign.center,
                         style: TextStyle(fontSize:15,fontWeight:FontWeight.w400)),
                         const SizedBox(height:20),
-                      Image.asset("assets/main1.png"),
+                      Image.asset("assets/main.png"),
                       const SizedBox(height: 5),
                       TextFormField(
                         decoration: textInputDecoration.copyWith(
