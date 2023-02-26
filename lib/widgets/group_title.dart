@@ -87,7 +87,7 @@ String recentMessage = "";
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
           subtitle:
-          recentMessageSender == "" || recentMessage == ""
+          recentMessageSender == "" && recentMessage == ""
               ? const Text("No recent messages")
               :
            Text(
