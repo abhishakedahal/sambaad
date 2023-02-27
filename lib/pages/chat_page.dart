@@ -379,9 +379,9 @@ _controller.addStatusListener((status) {
   }
 
   sendMessage() {
-    if (messageController.text.isNotEmpty && !isEncryptionEnabled) {
+    if (messageController.text.trim().isNotEmpty && !isEncryptionEnabled) {
       Map<String, dynamic> chatMessageMap = {
-        "message": messageController.text,
+        "message": messageController.text.trim(),
         "sender": widget.userName,
         "time": DateTime.now().millisecondsSinceEpoch,
         "isMessageEncrypted": false,
@@ -393,7 +393,7 @@ _controller.addStatusListener((status) {
       });
     } else {
       Map<String, dynamic> chatMessageMap = {
-        "message": AESEncryption.encryptAES(messageController.text),
+        "message": AESEncryption.encryptAES(messageController.text.trim()),
         "sender": widget.userName,
         "time": DateTime.now().millisecondsSinceEpoch,
         "isMessageEncrypted": true,
