@@ -159,7 +159,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           text:"Login Now",
                           style: const TextStyle(color: Color.fromARGB(255, 6, 68, 161),decoration: TextDecoration.underline,fontWeight:FontWeight.bold),
                           recognizer: TapGestureRecognizer()..onTap=(){
-                            nextScreen(context, const LoginPage());
+                            nextScreenReplace(context, const LoginPage());
                           }
                         )
                       ]

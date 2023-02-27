@@ -187,7 +187,7 @@ class _LoginPageState extends State<LoginPage> {
                                   fontWeight: FontWeight.bold),
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
-                                  nextScreen(context, const RegisterPage());
+                                  nextScreenReplace(context, const RegisterPage());
                                 })
                         ]))
                   ],

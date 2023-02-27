@@ -41,7 +41,7 @@ String recentMessage = "";
   getRecentMessageAndSender() {
     DatabaseServices().getRecentMessage(widget.groupId).then((val) {
       setState(() {
-        recentMessage = val;
+        recentMessage = val.length>30? val.substring(0,30)+" .....":val;
       });
     });
     DatabaseServices().getRecentMessageSender(widget.groupId).then((val) {
@@ -87,7 +87,7 @@ String recentMessage = "";
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
           subtitle:
-          recentMessageSender == "" || recentMessage == ""
+           recentMessage == ""
               ? const Text("No recent messages")
               :
            Text(
