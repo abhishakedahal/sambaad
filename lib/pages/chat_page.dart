@@ -214,6 +214,9 @@ _controller.addStatusListener((status) {
                     hintStyle: TextStyle(color: Colors.white, fontSize: 15),
                     border: InputBorder.none,
                   ),
+                  onFieldSubmitted: (value) {
+                    sendMessage();
+                  },
                 )),
                 const SizedBox(
                   width: 12,
