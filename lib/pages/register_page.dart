@@ -26,36 +26,42 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).primaryColor,
-      ),
-     // body: Center(child: Text("login page")),
+        backgroundColor: Color(0xFF3A98B9), toolbarHeight: 80, centerTitle:true,
+        title: Text("संवाद", style: TextStyle(fontSize: 60),), 
+     ),
+          // body: Center(child: Text("login page")),
+           bottomNavigationBar: BottomAppBar(
+        child: Container(
+          color: Color(0xFF3A98B9),
+          height: 55,),),
 
      body: _isLoading?Center (child:CircularProgressIndicator(color: Theme.of(context).primaryColor)):SingleChildScrollView(
         child:Padding(
-          padding:const EdgeInsets.symmetric(horizontal: 20,vertical: 10) ,
+          padding:const EdgeInsets.symmetric(horizontal: 0,vertical: 0) ,
           child: Form(
               key: formKey,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                    const Text(
-                      "संवाद",
-                      style: TextStyle(fontSize: 40,fontWeight: FontWeight.bold)
-                    ),
-                      const SizedBox(height: 5),
-                      const Text("Create your account now to see what people are talking about!",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize:15,fontWeight:FontWeight.w400)),
-                        const SizedBox(height:20),
+                  const SizedBox(height: 5),
                       Image.asset("assets/main.png"),
-                      const SizedBox(height: 5),
-                      TextFormField(
-                        decoration: textInputDecoration.copyWith(
+                      const SizedBox(height: 25),
+
+                      
+                       Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 0),
+                      child:TextFormField(
+                      decoration: textInputDecoration.copyWith(
+                      enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(width: 2, color: Color(0xFF3A98B9)), //<-- SEE HERE
+                      borderRadius: BorderRadius.circular(50.0),
+                      
+                      ),
                           labelText: "FullName",
                           prefixIcon: Icon(
                             Icons.person,
-                            color: Theme.of(context).primaryColor,
+                            color: Color(0xFF3A98B9),
                           )
                         ),
                         onChanged: (val){
@@ -76,81 +82,101 @@ class _RegisterPageState extends State<RegisterPage> {
                           }
                         },
                       ),
-
-
-                      const SizedBox(height: 10),
-                      TextFormField(
-                        decoration: textInputDecoration.copyWith(
-                          labelText: "Email",
-                          prefixIcon: Icon(
-                            Icons.email,
-                            color: Theme.of(context).primaryColor,
-                          )
-                        ),
-                        onChanged: (val){
-                          setState(() {
-                            email=val;
-                            print(email);
-
+                       ),
+                const SizedBox(height: 14),
+                     Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 0),
+                      child:TextFormField(
+                      decoration: textInputDecoration.copyWith(
+                      enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(width: 2, color: Color(0xFF3A98B9)), //<-- SEE HERE
+                      borderRadius: BorderRadius.circular(50.0),
+                      
+                      ),
+                            labelText: "Email",
+                          
+                            prefixIcon: Icon(
+                              Icons.email,
+                              color: Color(0xFF3A98B9),
+                            )),
+                        onChanged: (val) {                     
+                            setState(() {
+                            email = val;
+                            print(email);                                         
+                      
                           });
-                        },
 
-                        validator: (val){
-                          return RegExp("").hasMatch(val!)?null:"Please enter a valid email";
+                        },
+                        validator: (val) {
+                          return RegExp(
+                                      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                  .hasMatch(val!)
+                              ? null
+                              : "Please enter a valid email";
                         },
                       ),
+                      ),
 
-
-                      const SizedBox(height: 10),
-                      TextFormField(
+                     const SizedBox(height: 14),
+                  Padding(
+                   padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 0),
+                     child: TextFormField(                   
                         obscureText: true,
                         decoration: textInputDecoration.copyWith(
-                          labelText: "Password",
-                          prefixIcon: Icon(
-                            Icons.lock,
-                            color: Theme.of(context).primaryColor,
-                          )
-                        ),
-
-                        validator: (val){
-                          if(val!.length<6){
+                        enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(width: 2, color:Color(0xFF3A98B9)), //<-- SEE HERE
+                      borderRadius: BorderRadius.circular(50.0),
+                       ),
+                            labelText: "Password",
+                            prefixIcon: Icon(
+                              Icons.lock,
+                              color: Color(0xFF3A98B9),
+                            )),
+                        validator: (val) {
+                          if (val!.length < 6) {
                             return "password must be at least 6 character";
-                          }else{
+                          } else {
                             return null;
                           }
                         },
-                        onChanged: (val){
+                        onChanged: (val) {
                           setState(() {
-                            password=val;
+                            password = val;
                             print(password);
-
                           });
                         },
                       ),
-                    
+                            ),
+
                     const SizedBox(
-                      height: 20,
+                      height: 16,
                     ),
-                    SizedBox(
+
+                     Padding(
+                   padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 0),
+                    child:SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          primary: Theme.of(context).primaryColor,
+                          padding: const EdgeInsets.all(17.10),
+                          backgroundColor: Color(0xFF3A98B9),
                           elevation: 0,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30)
                           )
-                        ),
+                        ),                    
+                         
+                        child: const Text("Register",style:TextStyle(color:Colors.white,fontSize: 17, fontWeight: FontWeight.w900)
                         
-                        
-                        child: const Text("Register",style:TextStyle(color:Colors.white,fontSize: 16)
                         ),
+
                         onPressed: (){
                           register();
                         },
                         ),
                     ),
-                    const SizedBox(height: 10, ),
+                     ),
+                    const SizedBox(height: 1, ),
                     Text.rich(TextSpan(
                       text: "Already have an account?  ",
                       style: const TextStyle(color: Colors.black,fontSize: 14),
@@ -189,7 +215,8 @@ class _RegisterPageState extends State<RegisterPage> {
           await HelperFunction.saveUserNameSF(fullName);
          // nextScreenReplace(context,const HomePage());
           nextScreenReplace(context,const LoginPage());
-          showSnackbar(context, Colors.green, "Registration  successfull.");
+          showSnackbar(context, Color.fromARGB(255, 6, 180, 64), "Registred  Successfully.",);
+         
        
         }else{
           showSnackbar(context, Colors.red, value);

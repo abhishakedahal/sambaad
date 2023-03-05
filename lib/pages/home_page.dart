@@ -65,31 +65,33 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       //body: Center(child: Text("Home Page")),
-      appBar: AppBar(
-        actions: [
+      appBar: AppBar(      
+        actions: [          
           IconButton(
               onPressed: () {
                 nextScreen(context, const BMSearchPage());
               },
               icon: const Icon(
-                Icons.search,
-              ))
+               Icons.search,
+                size: 40,
+              )
+              )
+              
         ],
         elevation: 0,
-        centerTitle: true,
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: Color(0xFF3A98B9), toolbarHeight: 80,
+        centerTitle: true, 
         title: Text(
           "संवाद",
-          style: TextStyle(
-              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 27),
+          style: TextStyle(fontSize: 55),
         ),
       ),
 
-      drawer: Drawer(
-        child: ListView(
-          padding: const EdgeInsets.symmetric(vertical: 50),
+      drawer:  Drawer(                     
+          child: ListView(
+          padding: const EdgeInsets.symmetric(vertical: 50),           
           children: <Widget>[
-            Icon(
+              Icon(
               Icons.account_circle,
               size: 150,
               color: Colors.grey[700],
@@ -110,7 +112,7 @@ class _HomePageState extends State<HomePage> {
             ),
             ListTile(
               onTap: () {},
-              selectedColor: Theme.of(context).primaryColor,
+              selectedColor:Color(0xFF3A98B9),
               selected: true,
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
@@ -159,7 +161,8 @@ class _HomePageState extends State<HomePage> {
                                       builder: (context) => const LoginPage()),
                                   (route) => false);
                               showSnackbar(context, Colors.green,
-                                  "Logout  successfully.");
+                                "Logout  successfully.");
+                               
                             },
                             icon: const Icon(
                               Icons.done,
@@ -190,18 +193,18 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-
+     
       body: groupList(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           popUpDialog(context);
         },
-        elevation: 0,
-        backgroundColor: Theme.of(context).primaryColor,
-        child: const Icon(
-          Icons.add,
+        elevation: 5,
+        backgroundColor: Color(0xFF3A98B9),
+          child: const Icon(
+          Icons.person_add,
           color: Colors.white,
-          size: 30,
+          size: 31,
         ),
       ),
     );
