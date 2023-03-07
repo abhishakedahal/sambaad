@@ -73,17 +73,17 @@ class _HomePageState extends State<HomePage> {
               },
               icon: const Icon(
                Icons.search,
-                size: 40,
+                size: 30,
               )
               )
               
         ],
         elevation: 0,
-        backgroundColor: Color(0xFF3A98B9), toolbarHeight: 80,
+        backgroundColor: Color(0xFF3A98B9), toolbarHeight: 60,
         centerTitle: true, 
         title: Text(
           "संवाद",
-          style: TextStyle(fontSize: 55),
+          style: TextStyle(fontSize: 30),
         ),
       ),
 
@@ -94,10 +94,10 @@ class _HomePageState extends State<HomePage> {
               Icon(
               Icons.account_circle,
               size: 150,
-              color: Colors.grey[700],
+              color: Color(0xFF3A98B9),
             ),
             const SizedBox(
-              height: 15,
+              height: 10,
             ),
             Text(
               userName,
@@ -105,13 +105,19 @@ class _HomePageState extends State<HomePage> {
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
             const SizedBox(
-              height: 30,
+              height: 20,
             ),
             const Divider(
               height: 2,
             ),
             ListTile(
-              onTap: () {},
+              onTap: () {
+                nextScreenReplace(
+                    context,
+                    HomePage(
+                    
+                    ));
+              },
               selectedColor:Color(0xFF3A98B9),
               selected: true,
               contentPadding:
@@ -133,6 +139,8 @@ class _HomePageState extends State<HomePage> {
                       email: email,
                     ));
               },
+              selectedColor:Color(0xFF3A98B9),
+              selected: true,
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
               leading: const Icon(Icons.person),
@@ -150,6 +158,7 @@ class _HomePageState extends State<HomePage> {
                     context: context,
                     builder: (context) {
                       return AlertDialog(
+                        backgroundColor: Color.fromARGB(255, 196, 208, 212),
                         title: const Text("Logout"),
                         content: const Text("Are you sure you want to logout?"),
                         actions: [
@@ -164,6 +173,7 @@ class _HomePageState extends State<HomePage> {
                                 "Logout  successfully.");
                                
                             },
+                            
                             icon: const Icon(
                               Icons.done,
                               color: Colors.green,
@@ -173,6 +183,7 @@ class _HomePageState extends State<HomePage> {
                             onPressed: () {
                               Navigator.pop(context);
                             },
+                            
                             icon: const Icon(
                               Icons.cancel,
                               color: Colors.red,
@@ -182,6 +193,8 @@ class _HomePageState extends State<HomePage> {
                       );
                     });
               },
+              selectedColor:Color(0xFF3A98B9),
+              selected: true,
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
               leading: const Icon(Icons.exit_to_app),
