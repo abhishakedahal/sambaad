@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sambaad/pages/profile_page.dart';
@@ -158,9 +160,9 @@ class _HomePageState extends State<HomePage> {
                     context: context,
                     builder: (context) {
                       return AlertDialog(
-                        backgroundColor: Color.fromARGB(255, 196, 208, 212),
+                        backgroundColor: Color.fromARGB(255, 255, 255, 255),
                         title: const Text("Logout"),
-                        content: const Text("Are you sure you want to logout?"),
+                        content: const Text("Are you sure to logout from संवाद?"),
                         actions: [
                           IconButton(
                             onPressed: () async {
@@ -230,6 +232,7 @@ class _HomePageState extends State<HomePage> {
         builder: (context) {
           return StatefulBuilder(builder: ((context, setState) {
             return AlertDialog(
+              backgroundColor: Color.fromARGB(255, 255, 255, 255),
               title: const Text(
                 "Create a group",
                 textAlign: TextAlign.left,
@@ -240,10 +243,10 @@ class _HomePageState extends State<HomePage> {
                   _isLoading == true
                       ? Center(
                           child: CircularProgressIndicator(
-                              color: Theme.of(context).primaryColor),
-                        )
-                      : TextField(
-                          onChanged: (val) {
+                              color: Color(0xFF3A98B9),
+                        ),)
+                      : TextField(                        
+                          onChanged: (val) {                            
                             setState(() {
                               groupName = val;
                             });
@@ -252,15 +255,15 @@ class _HomePageState extends State<HomePage> {
                           decoration: InputDecoration(
                               enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
-                                      color: Theme.of(context).primaryColor),
+                                      color: Color(0xFF3A98B9)),
                                   borderRadius: BorderRadius.circular(20)),
                               errorBorder: OutlineInputBorder(
                                   borderSide:
-                                      const BorderSide(color: Colors.red),
+                                      const BorderSide(color: Color(0xFF3A98B9)),
                                   borderRadius: BorderRadius.circular(20)),
                               focusedBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
-                                      color: Theme.of(context).primaryColor),
+                                      color: Color(0xFF3A98B9)),
                                   borderRadius: BorderRadius.circular(20))),
                         ),
                 ],
@@ -271,7 +274,7 @@ class _HomePageState extends State<HomePage> {
                     Navigator.of(context).pop();
                   },
                   style: ElevatedButton.styleFrom(
-                      primary: Theme.of(context).primaryColor),
+                      backgroundColor: Color(0xFF3A98B9),),
                   child: const Text("CANCEL"),
                 ),
                 ElevatedButton(
@@ -293,7 +296,7 @@ class _HomePageState extends State<HomePage> {
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                      primary: Theme.of(context).primaryColor),
+                    backgroundColor: Color(0xFF3A98B9),),
                   child: const Text("CREATE"),
                 )
               ],
