@@ -74,7 +74,7 @@ String recentMessage = "";
         child: ListTile(
           leading: CircleAvatar(
             radius: 30,
-            backgroundColor: Theme.of(context).primaryColor,
+            backgroundColor: Color(0xFF3A98B9),
             child: Text(
               widget.groupName.substring(0, 1).toUpperCase(),
               textAlign: TextAlign.center,
