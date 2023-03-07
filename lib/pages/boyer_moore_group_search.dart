@@ -72,17 +72,17 @@ class _SearchPageState extends State<BMSearchPage> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: Color(0xFF3A98B9),
         title: const Text(
           "Search",
           style: TextStyle(
-              fontSize: 27, fontWeight: FontWeight.bold, color: Colors.white),
+              fontSize: 30, fontWeight: FontWeight.bold, color: Colors.white),
         ),
       ),
       body: Column(
         children: [
           Container(
-            color: Theme.of(context).primaryColor,
+            color: Color(0xFF3A98B9),
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
             child: Row(
               children: [
@@ -106,7 +106,7 @@ class _SearchPageState extends State<BMSearchPage> {
                     height: 40,
                     decoration: BoxDecoration(
                         color: Colors.white.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(40)),
+                        borderRadius: BorderRadius.circular(50)),
                     child: const Icon(
                       Icons.search,
                       color: Colors.white,
@@ -215,7 +215,7 @@ initiateSearchMethod() async {
       contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       leading: CircleAvatar(
         radius: 30,
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: Color(0xFF3A98B9),
         child: Text(
           groupName.substring(0, 1).toUpperCase(),
           style: const TextStyle(color: Colors.white),
@@ -233,7 +233,7 @@ initiateSearchMethod() async {
               isJoined = !isJoined;
             });
             // ignore: use_build_context_synchronously
-            showSnackbar(context, Colors.green, "Successfully joined he group");
+            showSnackbar(context, Colors.green, "Successfully joined the group");
             Future.delayed(const Duration(seconds: 2), () {
               nextScreen(
                   context,
@@ -253,7 +253,7 @@ initiateSearchMethod() async {
             ? Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  color: Colors.green,
+                  color: Color.fromARGB(255, 37, 216, 52),
                   border: Border.all(color: Colors.white, width: 1),
                 ),
                 padding:
