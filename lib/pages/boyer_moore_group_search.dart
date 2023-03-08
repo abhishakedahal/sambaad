@@ -266,7 +266,7 @@ initiateSearchMethod() async {
             : Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  color: Theme.of(context).primaryColor,
+                  color: Color(0xFF3A98B9),
                 ),
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
