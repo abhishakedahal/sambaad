@@ -25,8 +25,8 @@ class _MessageTileState extends State<MessageTile> {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(
-          top: 15,
-          bottom: 15,
+          top: 5,
+          bottom: 5,
           left: widget.sentByMe ? 0 : 24,
           right: widget.sentByMe ? 24 : 0),
       alignment: widget.sentByMe ? Alignment.centerRight : Alignment.centerLeft,
@@ -49,8 +49,8 @@ class _MessageTileState extends State<MessageTile> {
                     bottomRight: Radius.circular(20),
                   ),
             color: widget.sentByMe
-                ? Theme.of(context).primaryColor
-                : Colors.grey[700]),
+                ? Color(0xFF3A98B9)
+                : Color.fromARGB(255, 226, 81, 81)),
 
         //for sender and receiver name and message
         child: Column(
@@ -60,7 +60,7 @@ class _MessageTileState extends State<MessageTile> {
               widget.sender.toUpperCase(),
               textAlign: TextAlign.start,
               style: const TextStyle(
-                fontSize: 13,
+                fontSize: 15,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
               ),
@@ -72,7 +72,7 @@ class _MessageTileState extends State<MessageTile> {
             //     textAlign: TextAlign.start,
             //     style: const TextStyle(fontSize: 16, color: Colors.white)),
             widget.message,
-            const SizedBox(height: 8),
+            const SizedBox(height: 6),
             Text(
               dateDifference(),
               textAlign: TextAlign.start,
