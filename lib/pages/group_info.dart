@@ -51,8 +51,9 @@ class _GroupInfoState extends State<GroupInfo> {
       appBar: AppBar(
         centerTitle: true,
         elevation: 0,
-        backgroundColor: Theme.of(context).primaryColor,
-        title: const Text("Group Info"),
+        backgroundColor:Color(0xFF3A98B9),
+        toolbarHeight: 60,
+        title: const Text("Group Info", style: TextStyle(fontSize: 30),),
         actions: [
           IconButton(
               onPressed: () {
@@ -61,9 +62,9 @@ class _GroupInfoState extends State<GroupInfo> {
                     context: context,
                     builder: (context) {
                       return AlertDialog(
-                        title: const Text("Exit"),
+                        title: const Text("Leave Group?"),
                         content:
-                            const Text("Are you sure you want to exit from group? "),
+                            const Text("Are you sure to leave this group? "),
                         actions: [
                           IconButton(
                             onPressed: () async {
@@ -110,13 +111,13 @@ class _GroupInfoState extends State<GroupInfo> {
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30),
-                  color: Theme.of(context).primaryColor.withOpacity(0.2)),
+                  color: Color(0xFF3A98B9).withOpacity(0.2)),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   CircleAvatar(
                     radius: 30,
-                    backgroundColor: Theme.of(context).primaryColor,
+                    backgroundColor: Color(0xFF3A98B9),
                     child: Text(
                       widget.groupName.substring(0, 1).toUpperCase(),
                       style: const TextStyle(
@@ -131,25 +132,26 @@ class _GroupInfoState extends State<GroupInfo> {
                     children: [
                       Text(
                         "Group: ${widget.groupName}",
-                        style: const TextStyle(fontWeight: FontWeight.w500),
+                        style: const TextStyle(fontWeight: FontWeight.w800,fontSize: 20),
                       ),
                       const SizedBox(
-                        height: 5,
+                        height: 1,
                       ),
-                      Text("Admin: ${getName(widget.adminName)}")
+                      Text("Admin: ${getName(widget.adminName)}", style: TextStyle(fontSize: 15),)
                     ],
                   )
                 ],
               ),
             ),
             const SizedBox(
-              height: 50,
+              height: 30,
             ),
             
             const Text("MEMBERS",
                 style: TextStyle(
                   fontSize: 20,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w800,
+                  color: Color(0xFF000000),                  
                 ),
             ),
 
@@ -178,7 +180,7 @@ class _GroupInfoState extends State<GroupInfo> {
                       
                       leading: CircleAvatar(
                         radius: 30,
-                        backgroundColor: Theme.of(context).primaryColor,
+                        backgroundColor: Color(0xFF3A98B9),
                         child: Text(
                           getName(snapshot.data['members'][index])
                               .substring(0, 1)
@@ -189,7 +191,7 @@ class _GroupInfoState extends State<GroupInfo> {
                               fontWeight: FontWeight.bold),
                         ),
                       ),
-                      title: Text(getName(snapshot.data['members'][index])),
+                      title: Text(getName(snapshot.data['members'][index],),style: TextStyle(fontWeight: FontWeight.w500))
                       
                     ),
                   );

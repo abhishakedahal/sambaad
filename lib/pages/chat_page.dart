@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:sambaad/pages/group_info.dart';
@@ -120,10 +122,12 @@ _controller.addStatusListener((status) {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        title: Text(widget.groupName),
-        backgroundColor: Theme.of(context).primaryColor,
+      appBar: AppBar(        
+        elevation: 10,
+        title: Text(widget.groupName, style: TextStyle(fontSize: 25,),),
+        backgroundColor: Color(0xFF3A98B9),       
+         toolbarHeight: 60,
+        
         actions: [
           IconButton(
               onPressed: () {
@@ -142,12 +146,12 @@ _controller.addStatusListener((status) {
                     title: const Text("🔒 Encryption"),
                     content: Text(isEncryptionEnabled
                         ? "⚠️ Do you want to disable end-to-end encryption?"
-                        : "Do you want to enable end-to-end encryption? Doing so will disable the translation functionality."),
+                        : "Enabling end-to-end encryption will disable the translation functionality."),
                     actions: [
                       ElevatedButton(
                         child: const Text("No"),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.grey,
+                          backgroundColor: Color.fromARGB(255, 112, 112, 112),
                         ),
                         onPressed: () {
                           Navigator.of(context).pop();
@@ -156,7 +160,7 @@ _controller.addStatusListener((status) {
                       ElevatedButton(
                         child: const Text("Yes"),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Theme.of(context).primaryColor,
+                          backgroundColor: Color(0xFF3A98B9),
                         ),
                         onPressed: () {
                           setState(() {
@@ -172,6 +176,7 @@ _controller.addStatusListener((status) {
               );
             },
             icon: Icon(
+              
               Icons.lock,
               color: isEncryptionEnabled
                   ? Color.fromARGB(255, 43, 255, 0)
@@ -196,21 +201,25 @@ _controller.addStatusListener((status) {
         children: <Widget>[
           // chat messages here
           Expanded(child: chatMessages()), // chatMessages() calling,
-
+        
+        
           Container(
-            alignment: Alignment.bottomCenter,
-            width: MediaQuery.of(context).size.width,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              width: MediaQuery.of(context).size.width,
-              color: Colors.grey[700],
+            margin: const EdgeInsets.all(10),
+            decoration: BoxDecoration(              
+            borderRadius: BorderRadius.circular(50),
+            color: Color(0xFF3A98B9),         
+         ),
+            height: 55,
+            width: 400,             
+         
               child: Row(children: [
                 Expanded(
                     child: TextFormField(
                   controller: messageController,
                   style: const TextStyle(color: Colors.white),
-                  decoration: const InputDecoration(
+                  decoration: const InputDecoration(                    
                     hintText: "Type a message...",
+                    contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                     hintStyle: TextStyle(color: Colors.white, fontSize: 15),
                     border: InputBorder.none,
                   ),
@@ -225,19 +234,21 @@ _controller.addStatusListener((status) {
                   onTap: () {
                     sendMessage();
                   },
-                  child: Container(
+                  
+                  child: Container(           
+                                 
                     height: 40,
-                    width: 40,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).primaryColor,
-                      borderRadius: BorderRadius.circular(30),
-                    ),
+                    width: 55,
+                    padding: const EdgeInsets.symmetric( vertical: 9),                   
+                    
                     child: Center(
                       child: RotationTransition(
                         turns: Tween(begin: 0.0, end: 1.0).animate(_controller),
+                        
                         child: const Icon(
+                          
                           Icons.send,
-                          color: Colors.white,
+                          color: Color.fromARGB(255, 255, 255, 255),
                         ),
                       ),
                     ),
@@ -245,7 +256,7 @@ _controller.addStatusListener((status) {
                 )
               ]),
             ),
-          )
+          
         ],
       ),
     );
@@ -422,7 +433,7 @@ _controller.addStatusListener((status) {
           turns: Tween(begin: 0.0, end: 1.0).animate(_controller),
           child: const Icon(
             Icons.language,
-            color: Color.fromARGB(255, 138, 231, 141),
+            color: Color.fromARGB(255, 39, 231, 55),
           ),
         ),
         itemBuilder: (BuildContext context) => <PopupMenuItem<String>>[

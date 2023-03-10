@@ -19,12 +19,13 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
        appBar: AppBar(
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: Color(0xFF3A98B9),
         elevation: 0,
+        toolbarHeight:60,
         title: const Text(
           "Profile",
           style: TextStyle(
-              color: Colors.white, fontSize: 27, fontWeight: FontWeight.bold),
+              color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold),
         ),
       ),
 
@@ -35,7 +36,7 @@ class _ProfilePageState extends State<ProfilePage> {
           Icon(
             Icons.account_circle,
             size: 150,
-            color: Colors.grey[700],
+            color: Color(0xFF3A98B9),
           ),
           const SizedBox(
             height: 15,
@@ -55,7 +56,9 @@ class _ProfilePageState extends State<ProfilePage> {
             onTap: () {
               nextScreen(context, const HomePage());
             },
-            contentPadding:
+            selectedColor: Color(0xFF3A98B9),
+            selected: true,
+            contentPadding:            
                 const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
             leading: const Icon(Icons.group),
             title: const Text(
@@ -66,7 +69,7 @@ class _ProfilePageState extends State<ProfilePage> {
           ListTile(
             onTap: () {},
             selected: true,
-            selectedColor: Theme.of(context).primaryColor,
+            selectedColor: Color(0xFF3A98B9),
             contentPadding:
                 const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
             leading: const Icon(Icons.group),
@@ -83,17 +86,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   builder: (context) {
                     return AlertDialog(
                       title: const Text("Logout"),
-                      content: const Text("Are you sure you want to logout?"),
+                      content: const Text("Are you sure to logout from संवाद?"),
                       actions: [
-                        IconButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          icon: const Icon(
-                            Icons.cancel,
-                            color: Colors.red,
-                          ),
-                        ),
+                        
                         IconButton(
                           onPressed: () async {
                             await authService.signout();
@@ -105,12 +100,24 @@ class _ProfilePageState extends State<ProfilePage> {
                           icon: const Icon(
                             Icons.done,
                             color: Colors.green,
+                          ),                         
+                        ), 
+                        
+                        IconButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: const Icon(
+                            Icons.cancel,
+                            color: Colors.red,
                           ),
                         ),
                       ],
                     );
                   });
             },
+            selectedColor: Color(0xFF3A98B9),
+            selected: true,
             contentPadding:
                 const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
             leading: const Icon(Icons.exit_to_app),
@@ -129,7 +136,7 @@ class _ProfilePageState extends State<ProfilePage> {
             Icon(
               Icons.account_circle,
               size: 150,
-              color: Colors.grey[700],
+              color: Color(0xFF3A98B9),
             ),
             const SizedBox(
               height: 50,
@@ -137,18 +144,18 @@ class _ProfilePageState extends State<ProfilePage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text("Full Name", style: TextStyle(fontSize: 17)),
-                Text(widget.userName, style: const TextStyle(fontSize: 17)),
+                const Text("Full Name", style: TextStyle(fontSize: 17,fontWeight:FontWeight.w900)),
+                Text(widget.userName, style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w900)),
               ],
             ),
             const Divider(
-              height: 20,
+              height: 15,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text("Email", style: TextStyle(fontSize: 17)),
-                Text(widget.email, style: const TextStyle(fontSize: 17)),
+                const Text("Email", style: TextStyle(fontSize: 17,fontWeight:FontWeight.w900)),
+                Text(widget.email, style: const TextStyle(fontSize: 17,fontWeight:FontWeight.w900)),
               ],
             ),
           ],

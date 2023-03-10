@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sambaad/pages/profile_page.dart';
@@ -73,17 +75,17 @@ class _HomePageState extends State<HomePage> {
               },
               icon: const Icon(
                Icons.search,
-                size: 40,
+                size: 30,
               )
               )
               
         ],
         elevation: 0,
-        backgroundColor: Color(0xFF3A98B9), toolbarHeight: 80,
+        backgroundColor: Color(0xFF3A98B9), toolbarHeight: 60,
         centerTitle: true, 
         title: Text(
           "संवाद",
-          style: TextStyle(fontSize: 55),
+          style: TextStyle(fontSize: 30),
         ),
       ),
 
@@ -94,10 +96,10 @@ class _HomePageState extends State<HomePage> {
               Icon(
               Icons.account_circle,
               size: 150,
-              color: Colors.grey[700],
+              color: Color(0xFF3A98B9),
             ),
             const SizedBox(
-              height: 15,
+              height: 10,
             ),
             Text(
               userName,
@@ -105,13 +107,19 @@ class _HomePageState extends State<HomePage> {
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
             const SizedBox(
-              height: 30,
+              height: 20,
             ),
             const Divider(
               height: 2,
             ),
             ListTile(
-              onTap: () {},
+              onTap: () {
+                nextScreenReplace(
+                    context,
+                    HomePage(
+                    
+                    ));
+              },
               selectedColor:Color(0xFF3A98B9),
               selected: true,
               contentPadding:
@@ -133,6 +141,8 @@ class _HomePageState extends State<HomePage> {
                       email: email,
                     ));
               },
+              selectedColor:Color(0xFF3A98B9),
+              selected: true,
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
               leading: const Icon(Icons.person),
@@ -150,8 +160,9 @@ class _HomePageState extends State<HomePage> {
                     context: context,
                     builder: (context) {
                       return AlertDialog(
+                        backgroundColor: Color.fromARGB(255, 255, 255, 255),
                         title: const Text("Logout"),
-                        content: const Text("Are you sure you want to logout?"),
+                        content: const Text("Are you sure to logout from संवाद?"),
                         actions: [
                           IconButton(
                             onPressed: () async {
@@ -164,6 +175,7 @@ class _HomePageState extends State<HomePage> {
                                 "Logout  successfully.");
                                
                             },
+                            
                             icon: const Icon(
                               Icons.done,
                               color: Colors.green,
@@ -173,6 +185,7 @@ class _HomePageState extends State<HomePage> {
                             onPressed: () {
                               Navigator.pop(context);
                             },
+                            
                             icon: const Icon(
                               Icons.cancel,
                               color: Colors.red,
@@ -182,6 +195,8 @@ class _HomePageState extends State<HomePage> {
                       );
                     });
               },
+              selectedColor:Color(0xFF3A98B9),
+              selected: true,
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
               leading: const Icon(Icons.exit_to_app),
@@ -217,6 +232,7 @@ class _HomePageState extends State<HomePage> {
         builder: (context) {
           return StatefulBuilder(builder: ((context, setState) {
             return AlertDialog(
+              backgroundColor: Color.fromARGB(255, 255, 255, 255),
               title: const Text(
                 "Create a group",
                 textAlign: TextAlign.left,
@@ -227,10 +243,10 @@ class _HomePageState extends State<HomePage> {
                   _isLoading == true
                       ? Center(
                           child: CircularProgressIndicator(
-                              color: Theme.of(context).primaryColor),
-                        )
-                      : TextField(
-                          onChanged: (val) {
+                              color: Color(0xFF3A98B9),
+                        ),)
+                      : TextField(                        
+                          onChanged: (val) {                            
                             setState(() {
                               groupName = val;
                             });
@@ -239,15 +255,15 @@ class _HomePageState extends State<HomePage> {
                           decoration: InputDecoration(
                               enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
-                                      color: Theme.of(context).primaryColor),
+                                      color: Color(0xFF3A98B9)),
                                   borderRadius: BorderRadius.circular(20)),
                               errorBorder: OutlineInputBorder(
                                   borderSide:
-                                      const BorderSide(color: Colors.red),
+                                      const BorderSide(color: Color(0xFF3A98B9)),
                                   borderRadius: BorderRadius.circular(20)),
                               focusedBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
-                                      color: Theme.of(context).primaryColor),
+                                      color: Color(0xFF3A98B9)),
                                   borderRadius: BorderRadius.circular(20))),
                         ),
                 ],
@@ -258,7 +274,7 @@ class _HomePageState extends State<HomePage> {
                     Navigator.of(context).pop();
                   },
                   style: ElevatedButton.styleFrom(
-                      primary: Theme.of(context).primaryColor),
+                      backgroundColor: Color(0xFF3A98B9),),
                   child: const Text("CANCEL"),
                 ),
                 ElevatedButton(
@@ -280,7 +296,7 @@ class _HomePageState extends State<HomePage> {
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                      primary: Theme.of(context).primaryColor),
+                    backgroundColor: Color(0xFF3A98B9),),
                   child: const Text("CREATE"),
                 )
               ],
