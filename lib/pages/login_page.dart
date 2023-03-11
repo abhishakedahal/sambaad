@@ -87,6 +87,11 @@ class _LoginPageState extends State<LoginPage> {
                                   width: 2, color: Color(0xFF3A98B9)),
                               borderRadius: BorderRadius.circular(50.0),
                             ),
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  width: 2, color: Color(0xFF3A98B9)),
+                              borderRadius: BorderRadius.circular(50.0),
+                            ),
                             labelText: "Email",
                             prefixIcon: Icon(
                               Icons.email,
@@ -125,6 +130,11 @@ class _LoginPageState extends State<LoginPage> {
                               borderRadius: BorderRadius.circular(50.0),
                             ),
                             errorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  width: 2, color: Color(0xFF3A98B9)),
+                              borderRadius: BorderRadius.circular(50.0),
+                            ),
+                            focusedErrorBorder: OutlineInputBorder(
                               borderSide: BorderSide(
                                   width: 2, color: Color(0xFF3A98B9)),
                               borderRadius: BorderRadius.circular(50.0),
