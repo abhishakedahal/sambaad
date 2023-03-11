@@ -29,8 +29,9 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF3A98B9), toolbarHeight: 80,
-        centerTitle: true, 
+        backgroundColor: Color(0xFF3A98B9),
+        toolbarHeight: 80,
+        centerTitle: true,
         title: Text(
           "संवाद",
           style: TextStyle(fontSize: 60),
@@ -76,7 +77,17 @@ class _LoginPageState extends State<LoginPage> {
                                   color: Color(0xFF3A98B9)), //<-- SEE HERE
                               borderRadius: BorderRadius.circular(50.0),
                             ),
-                            labelText: "Email",                           
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  width: 2, color: Color(0xFF3A98B9)),
+                              borderRadius: BorderRadius.circular(50.0),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  width: 2, color: Color(0xFF3A98B9)),
+                              borderRadius: BorderRadius.circular(50.0),
+                            ),
+                            labelText: "Email",
                             prefixIcon: Icon(
                               Icons.email,
                               color: Color(0xFF3A98B9),
@@ -108,6 +119,16 @@ class _LoginPageState extends State<LoginPage> {
                                   width: 2, color: Color(0xFF3A98B9)),
                               borderRadius: BorderRadius.circular(50.0),
                             ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  width: 2, color: Color(0xFF3A98B9)),
+                              borderRadius: BorderRadius.circular(50.0),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  width: 2, color: Color(0xFF3A98B9)),
+                              borderRadius: BorderRadius.circular(50.0),
+                            ),
                             labelText: "Password",
                             prefixIcon: Icon(
                               Icons.lock,
@@ -129,7 +150,6 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
 
-                   
                     const SizedBox(
                       height: 16,
                     ),
@@ -172,7 +192,8 @@ class _LoginPageState extends State<LoginPage> {
                                   fontWeight: FontWeight.bold),
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
-                                  nextScreenReplace(context, const RegisterPage());
+                                  nextScreenReplace(
+                                      context, const RegisterPage());
                                 })
                         ]))
                   ],
@@ -203,7 +224,6 @@ class _LoginPageState extends State<LoginPage> {
 
           nextScreenReplace(context, const HomePage());
           showSnackbar(context, Colors.green, "Logged in successfully.");
-        
         } else {
           showSnackbar(context, Colors.red, value);
           setState(() {
