@@ -129,24 +129,9 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
 
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 13.0),
-                      child: CheckboxListTile(
-                        //checkbox positioned at right
-
-                        value: check3,
-
-                        controlAffinity: ListTileControlAffinity.leading,
-                        onChanged: (bool? value) {
-                          setState(() {
-                            check3 = value;
-                          });
-                        },
-                        title: Text("Remember me"),
-                      ),
-                    ),
+                   
                     const SizedBox(
-                      height: 0,
+                      height: 16,
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
