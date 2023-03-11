@@ -110,6 +110,9 @@ class _LoginPageState extends State<LoginPage> {
                               ? null
                               : "Please enter a valid email";
                         },
+                        onFieldSubmitted: (value) {
+                          login();
+                        },
                       ),
                     ),
                     const SizedBox(height: 14),
@@ -156,6 +159,9 @@ class _LoginPageState extends State<LoginPage> {
                             password = val;
                             print(password);
                           });
+                        },
+                        onFieldSubmitted: (value) {
+                          login();
                         },
                       ),
                     ),
