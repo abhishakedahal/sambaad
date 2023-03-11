@@ -79,7 +79,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                     width: 2, color: Color(0xFF3A98B9)),
                                 borderRadius: BorderRadius.circular(50.0),
                               ),
-                               focusedErrorBorder: OutlineInputBorder(
+                              focusedErrorBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
                                     width: 2, color: Color(0xFF3A98B9)),
                                 borderRadius: BorderRadius.circular(50.0),
@@ -102,6 +102,9 @@ class _RegisterPageState extends State<RegisterPage> {
                             } else {
                               return "Name cannot be empty";
                             }
+                          },
+                          onFieldSubmitted: (value) {
+                            register();
                           },
                         ),
                       ),
@@ -127,7 +130,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                     width: 2, color: Color(0xFF3A98B9)),
                                 borderRadius: BorderRadius.circular(50.0),
                               ),
-                               focusedErrorBorder: OutlineInputBorder(
+                              focusedErrorBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
                                     width: 2, color: Color(0xFF3A98B9)),
                                 borderRadius: BorderRadius.circular(50.0),
@@ -149,6 +152,9 @@ class _RegisterPageState extends State<RegisterPage> {
                                     .hasMatch(val!)
                                 ? null
                                 : "Please enter a valid email";
+                          },
+                          onFieldSubmitted: (value) {
+                            register();
                           },
                         ),
                       ),
@@ -197,6 +203,9 @@ class _RegisterPageState extends State<RegisterPage> {
                               password = val;
                               print(password);
                             });
+                          },
+                          onFieldSubmitted: (value) {
+                            register();
                           },
                         ),
                       ),
