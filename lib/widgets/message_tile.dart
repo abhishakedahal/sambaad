@@ -50,7 +50,7 @@ class _MessageTileState extends State<MessageTile> {
                   ),
             color: widget.sentByMe
                 ? Color(0xFF3A98B9)
-                : Color.fromARGB(255, 226, 81, 81)),
+                : Color.fromARGB(192, 122, 121, 121)),
 
         //for sender and receiver name and message
         child: Column(
@@ -70,7 +70,7 @@ class _MessageTileState extends State<MessageTile> {
             ),
             // Text(widget.message,
             //     textAlign: TextAlign.start,
-            //     style: const TextStyle(fontSize: 16, color: Colors.white)),
+            //     style: const TextStyle(fontSize: 16, color: widget.sentByMe ? Colors.white : Colors.red)),
             widget.message,
             const SizedBox(height: 6),
             Text(
