@@ -58,6 +58,7 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
   void initState() {
     getSavedLanguage();
     getChatandAdmin();
+    getProfanityFilterState();
     getEncryptionState();
     _controller = AnimationController(
       duration: const Duration(milliseconds: 1000),
@@ -156,7 +157,7 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
                     title: const Text("Profanity Filter"),
                     content: Text(isProfanityFilterEnabled
                         ? "⚠️ Do you want to disable profanity filter?"
-                        : "Do you want to enable profanity filter?"),
+                        : "Do you want to enable profanity filter? Note that this will not work with encryption enabled."),
                     actions: [
                       ElevatedButton(
                         child: const Text("No"),
