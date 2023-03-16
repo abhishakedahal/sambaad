@@ -51,6 +51,7 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
   String admin = "";
   String selectedLanguageCode = "en";
   bool isEncryptionEnabled = false;
+  bool isProfanityFilterEnabled = false;
   late AnimationController _controller;
 
   @override
@@ -59,18 +60,18 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
     getChatandAdmin();
     getEncryptionState();
     _controller = AnimationController(
-      duration: const Duration(milliseconds:1000),
+      duration: const Duration(milliseconds: 1000),
       vsync: this,
     );
     // _controller.repeat();
     _controller.forward();
-_controller.addStatusListener((status) {
-  if (status == AnimationStatus.completed) {
-    Future.delayed(Duration(seconds: 4), () {
-      _controller.forward(from: 0.0);
+    _controller.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        Future.delayed(Duration(seconds: 4), () {
+          _controller.forward(from: 0.0);
+        });
+      }
     });
-  }
-});
 
     super.initState();
   }
@@ -119,23 +120,79 @@ _controller.addStatusListener((status) {
     });
   }
 
+  void saveProfanityFilterState(bool isProfanityFilterEnabled) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.setBool('isProfanityFilterEnabled', isProfanityFilterEnabled);
+  }
+
+  void getProfanityFilterState() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    setState(() {
+      isProfanityFilterEnabled =
+          preferences.getBool('isProfanityFilterEnabled') ?? false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(        
+      appBar: AppBar(
         elevation: 10,
-        title: Text(widget.groupName, style: TextStyle(fontSize: 25,),),
-        backgroundColor: Color(0xFF3A98B9),       
-         toolbarHeight: 60,
-        
+        title: Text(
+          widget.groupName,
+          style: TextStyle(
+            fontSize: 25,
+          ),
+        ),
+        backgroundColor: Color(0xFF3A98B9),
+        toolbarHeight: 60,
         actions: [
           IconButton(
-              onPressed: () {
-                nextScreen(context, const SearchMessage());
-              },
-              icon: const Icon(
-                Icons.search,
-              )),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: const Text("Profanity Filter"),
+                    content: Text(isProfanityFilterEnabled
+                        ? "⚠️ Do you want to disable profanity filter?"
+                        : "Do you want to enable profanity filter?"),
+                    actions: [
+                      ElevatedButton(
+                        child: const Text("No"),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color.fromARGB(255, 112, 112, 112),
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      ElevatedButton(
+                        child: const Text("Yes"),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xFF3A98B9),
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            isProfanityFilterEnabled =
+                                !isProfanityFilterEnabled;
+                          });
+                          saveProfanityFilterState(isProfanityFilterEnabled);
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+            icon: Icon(
+              Icons.generating_tokens_outlined,
+              color: isProfanityFilterEnabled
+                  ? Color.fromARGB(255, 43, 255, 0)
+                  : Colors.white,
+            ),
+          ),
           languageButton(isEncryptionEnabled, context),
           IconButton(
             onPressed: () {
@@ -176,7 +233,6 @@ _controller.addStatusListener((status) {
               );
             },
             icon: Icon(
-              
               Icons.lock,
               color: isEncryptionEnabled
                   ? Color.fromARGB(255, 43, 255, 0)
@@ -201,62 +257,55 @@ _controller.addStatusListener((status) {
         children: <Widget>[
           // chat messages here
           Expanded(child: chatMessages()), // chatMessages() calling,
-        
-        
+
           Container(
             margin: const EdgeInsets.all(10),
-            decoration: BoxDecoration(              
-            borderRadius: BorderRadius.circular(50),
-            color: Color(0xFF3A98B9),         
-         ),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(50),
+              color: Color(0xFF3A98B9),
+            ),
             height: 55,
-            width: 400,             
-         
-              child: Row(children: [
-                Expanded(
-                    child: TextFormField(
-                  controller: messageController,
-                  style: const TextStyle(color: Colors.white),
-                  decoration: const InputDecoration(                    
-                    hintText: "Type a message...",
-                    contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                    hintStyle: TextStyle(color: Colors.white, fontSize: 15),
-                    border: InputBorder.none,
-                  ),
-                  onFieldSubmitted: (value) {
-                    sendMessage();
-                  },
-                )),
-                const SizedBox(
-                  width: 12,
+            width: 400,
+            child: Row(children: [
+              Expanded(
+                  child: TextFormField(
+                controller: messageController,
+                style: const TextStyle(color: Colors.white),
+                decoration: const InputDecoration(
+                  hintText: "Type a message...",
+                  contentPadding:
+                      EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                  hintStyle: TextStyle(color: Colors.white, fontSize: 15),
+                  border: InputBorder.none,
                 ),
-                GestureDetector(
-                  onTap: () {
-                    sendMessage();
-                  },
-                  
-                  child: Container(           
-                                 
-                    height: 40,
-                    width: 55,
-                    padding: const EdgeInsets.symmetric( vertical: 9),                   
-                    
-                    child: Center(
-                      child: RotationTransition(
-                        turns: Tween(begin: 0.0, end: 1.0).animate(_controller),
-                        
-                        child: const Icon(
-                          
-                          Icons.send,
-                          color: Color.fromARGB(255, 255, 255, 255),
-                        ),
+                onFieldSubmitted: (value) {
+                  sendMessage();
+                },
+              )),
+              const SizedBox(
+                width: 12,
+              ),
+              GestureDetector(
+                onTap: () {
+                  sendMessage();
+                },
+                child: Container(
+                  height: 40,
+                  width: 55,
+                  padding: const EdgeInsets.symmetric(vertical: 9),
+                  child: Center(
+                    child: RotationTransition(
+                      turns: Tween(begin: 0.0, end: 1.0).animate(_controller),
+                      child: const Icon(
+                        Icons.send,
+                        color: Color.fromARGB(255, 255, 255, 255),
                       ),
                     ),
                   ),
-                )
-              ]),
-            ),
-          
+                ),
+              )
+            ]),
+          ),
         ],
       ),
     );
@@ -369,18 +418,105 @@ _controller.addStatusListener((status) {
                             //get time
                           );
                         } else {
-                          return MessageTile(
-                            message: Text(
-                                snapshot.data.docs[index]['translatedfield']
-                                    [selectedLanguageCode],
-                                textAlign: TextAlign.start,
-                                style: const TextStyle(
-                                    color: Colors.white, fontSize: 16)),
-                            sender: snapshot.data.docs[index]['sender'],
-                            sentByMe: widget.userName ==
-                                snapshot.data.docs[index]['sender'],
-                            time: snapshot.data.docs[index]['time'],
-                          );
+                          if (isProfanityFilterEnabled) {
+                            if (snapshot.data.docs[index]['attribute_scores']
+                                    ['PROFANITY'] ==
+                                null) {
+                              return MessageTile(
+                                message: const Text('Typing...',
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 16)),
+                                sender: snapshot.data.docs[index]['sender'],
+                                sentByMe: widget.userName ==
+                                    snapshot.data.docs[index]['sender'],
+                                time: snapshot.data.docs[index]['time'],
+                                //get time
+                              );
+                            } else if (snapshot.data.docs[index]
+                                        ['attribute_scores']['PROFANITY'] !=
+                                    null &&
+                                snapshot.data.docs[index]['attribute_scores']
+                                        ['PROFANITY'] >
+                                    0.6) {
+                              return MessageTile(
+                                message: const Text(
+                                    "🔞This message contains potentially offensive content. So it has been hidden.🔞",
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                        fontStyle: FontStyle.italic)),
+                                sender: snapshot.data.docs[index]['sender'],
+                                sentByMe: widget.userName ==
+                                    snapshot.data.docs[index]['sender'],
+                                time: snapshot.data.docs[index]['time'],
+                              );
+                            } else {
+                              if (snapshot
+                                  .data
+                                  .docs[index]['translatedfield']
+                                      [selectedLanguageCode]
+                                  .isEmpty) {
+                                return MessageTile(
+                                  message: const Text('Typing...',
+                                      textAlign: TextAlign.start,
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 16)),
+                                  sender: snapshot.data.docs[index]['sender'],
+                                  sentByMe: widget.userName ==
+                                      snapshot.data.docs[index]['sender'],
+                                  time: snapshot.data.docs[index]['time'],
+                                  //get time
+                                );
+                              } else {
+                                return MessageTile(
+                                  message: Text(
+                                      snapshot.data.docs[index]
+                                              ['translatedfield']
+                                          [selectedLanguageCode],
+                                      textAlign: TextAlign.start,
+                                      style: const TextStyle(
+                                          color: Colors.white, fontSize: 16)),
+                                  sender: snapshot.data.docs[index]['sender'],
+                                  sentByMe: widget.userName ==
+                                      snapshot.data.docs[index]['sender'],
+                                  time: snapshot.data.docs[index]['time'],
+                                );
+                              }
+                            }
+                          } else {
+                            if (snapshot
+                                .data
+                                .docs[index]['translatedfield']
+                                    [selectedLanguageCode]
+                                .isEmpty) {
+                              return MessageTile(
+                                message: const Text('Typing...',
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 16)),
+                                sender: snapshot.data.docs[index]['sender'],
+                                sentByMe: widget.userName ==
+                                    snapshot.data.docs[index]['sender'],
+                                time: snapshot.data.docs[index]['time'],
+                                //get time
+                              );
+                            } else {
+                              return MessageTile(
+                                message: Text(
+                                    snapshot.data.docs[index]['translatedfield']
+                                        [selectedLanguageCode],
+                                    textAlign: TextAlign.start,
+                                    style: const TextStyle(
+                                        color: Colors.white, fontSize: 16)),
+                                sender: snapshot.data.docs[index]['sender'],
+                                sentByMe: widget.userName ==
+                                    snapshot.data.docs[index]['sender'],
+                                time: snapshot.data.docs[index]['time'],
+                              );
+                            }
+                          }
                         }
                       }
                     }
