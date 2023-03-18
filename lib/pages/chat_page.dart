@@ -52,6 +52,8 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
   String selectedLanguageCode = "en";
   bool isEncryptionEnabled = false;
   bool isProfanityFilterEnabled = false;
+  String messageText =
+      "🔞This message contains potentially offensive content. So it has been hidden.🔞";
   late AnimationController _controller;
 
   @override
@@ -441,13 +443,47 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
                                         ['PROFANITY'] >
                                     0.6) {
                               return MessageTile(
-                                message: const Text(
-                                    "🔞This message contains potentially offensive content. So it has been hidden.🔞",
-                                    textAlign: TextAlign.start,
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 16,
-                                        fontStyle: FontStyle.italic)),
+                                message: GestureDetector(
+                                  onLongPress: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: const Text('Confirm'),
+                                          content: const Text(
+                                              '⚠️ Are you sure you want to view this message?'),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+
+                                                setState(() {
+                                                  messageText = snapshot
+                                                              .data.docs[index]
+                                                          ['translatedfield']
+                                                      [selectedLanguageCode];
+                                                });
+                                              },
+                                              child: const Text('Yes'),
+                                            ),
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: const Text('No'),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  },
+                                  child: Text(messageText,
+                                      textAlign: TextAlign.start,
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                          fontStyle: FontStyle.italic)),
+                                ),
                                 sender: snapshot.data.docs[index]['sender'],
                                 sentByMe: widget.userName ==
                                     snapshot.data.docs[index]['sender'],
