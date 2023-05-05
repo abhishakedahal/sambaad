@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:sambaad/pages/group_info.dart';
@@ -8,7 +7,8 @@ import 'package:sambaad/widgets/message_tile.dart';
 import 'package:sambaad/widgets/widgets.dart';
 import 'package:sambaad/pages/search_message.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:encrypt/encrypt.dart' as encrypt;
+// import 'package:encrypt/encrypt.dart' as encrypt;
+import 'package:sambaad/algorithm/aes/lib/encrypt.dart' as encrypt;
 
 class AESEncryption {
   static encryptAES(plainText) {
