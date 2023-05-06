@@ -33,6 +33,7 @@ dependencies:
   cloud_firestore: ^4.3.0
   cupertino_icons: ^1.0.2
   encrypt: ^5.0.1
+  ffi: ^2.0.1
   firebase_auth: ^4.2.3
   firebase_core: ^2.4.0
   flutter:

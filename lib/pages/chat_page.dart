@@ -53,7 +53,7 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
   bool isEncryptionEnabled = false;
   bool isProfanityFilterEnabled = false;
   String messageText =
-      "🔞This message contains potentially offensive content. So it has been hidden.🔞";
+      "🔞This message contains potentially offensive content. Long press if you want to view it 🔞";
   late AnimationController _controller;
 
   @override
