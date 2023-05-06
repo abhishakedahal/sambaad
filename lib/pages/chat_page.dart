@@ -12,7 +12,7 @@ import 'package:sambaad/algorithm/aes/lib/encrypt.dart' as encrypt;
 
 class AESEncryption {
   static encryptAES(plainText) {
-    final key = encrypt.Key.fromUtf8('JaNdRgUkXp2s5v8y/B?E(H+MbQeShVmY');
+    final key = encrypt.Key.fromUtf8('JaNdRgUkXp2s5v8y');
     final iv = encrypt.IV.fromLength(16);
     final encrypter = encrypt.Encrypter(encrypt.AES(key));
     final encrypted = encrypter.encrypt(plainText, iv: iv);
@@ -20,7 +20,7 @@ class AESEncryption {
   }
 
   static decryptAES(encryptedText) {
-    final key = encrypt.Key.fromUtf8('JaNdRgUkXp2s5v8y/B?E(H+MbQeShVmY');
+    final key = encrypt.Key.fromUtf8('JaNdRgUkXp2s5v8y');
     final iv = encrypt.IV.fromLength(16);
     final encrypter = encrypt.Encrypter(encrypt.AES(key));
     final encrypted = encrypt.Encrypted.fromBase64(encryptedText);
