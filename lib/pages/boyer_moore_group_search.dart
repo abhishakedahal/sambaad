@@ -6,14 +6,13 @@ import 'package:sambaad/helper/helper_function.dart';
 import 'package:sambaad/pages/chat_page.dart';
 import 'package:sambaad/services/database_services.dart';
 import 'package:sambaad/widgets/widgets.dart';
-
 import '../algorithm/boyre_moore.dart';
 
 class BMSearchPage extends StatefulWidget {
-  const BMSearchPage({super.key});
+  const BMSearchPage({Key? key}) : super(key: key);
 
   @override
-  State<BMSearchPage> createState() => _SearchPageState();
+  _SearchPageState createState() => _SearchPageState();
 }
 
 class _SearchPageState extends State<BMSearchPage> {
@@ -22,8 +21,8 @@ class _SearchPageState extends State<BMSearchPage> {
   QuerySnapshot? searchSnapshot;
   bool hasUserSearched = false;
   String userName = "";
-  bool isJoined = false;
   User? user;
+  Map<String, bool> joinedGroups = {};
 
   List<DocumentSnapshot> searchGroup(
       String searchText, QuerySnapshot snapshot) {
@@ -44,10 +43,10 @@ class _SearchPageState extends State<BMSearchPage> {
     super.initState();
     getCurrentUserIdandName();
     searchController.addListener(() {
-    if (searchController.text.isNotEmpty) {
-      initiateSearchMethod();
-    }
-  });
+      if (searchController.text.isNotEmpty) {
+        initiateSearchMethod();
+      }
+    });
   }
 
   getCurrentUserIdandName() async {
@@ -128,42 +127,24 @@ class _SearchPageState extends State<BMSearchPage> {
     );
   }
 
-//   initiateSearchMethod() async {
-//   if (searchController.text.isNotEmpty) {
-//     setState(() {
-//       isLoading = true;
-//     });
-//     Timer(const Duration(milliseconds: 1000), () async {
-//       await DatabaseServices().BMgroupSearchByName().then((snapshot) {
-//         setState(() {
-//           searchSnapshot = snapshot;
-//           isLoading = false;
-//           hasUserSearched = true;
-//         });
-//       });
-//     });
-//   }
-// }
-
-initiateSearchMethod() async {
-  if (searchController.text.isNotEmpty) {
-    setState(() {
-      isLoading = true;
-    });
-    await Future.delayed(const Duration(milliseconds: 700), () async {
-      await DatabaseServices().BMgroupSearchByName().then((snapshot) {
-        setState(() {
-          searchSnapshot = snapshot;
-          isLoading = false;
-          hasUserSearched = true;
+  initiateSearchMethod() async {
+    if (searchController.text.isNotEmpty) {
+      setState(() {
+        isLoading = true;
+      });
+      await Future.delayed(const Duration(milliseconds: 700), () async {
+        await DatabaseServices().BMgroupSearchByName().then((snapshot) {
+          setState(() {
+            searchSnapshot = snapshot;
+            isLoading = false;
+            hasUserSearched = true;
+          });
         });
       });
-    });
+    }
   }
-}
 
-
-  groupList() {
+  Widget groupList() {
     return hasUserSearched
         ? searchGroup(searchController.text, searchSnapshot!).isNotEmpty
             ? ListView.builder(
@@ -173,15 +154,20 @@ initiateSearchMethod() async {
                 itemBuilder: (context, index) {
                   final DocumentSnapshot group = searchGroup(
                       searchController.text, searchSnapshot!)[index];
+                  final String groupId = group.get('groupId');
+                  final String groupName = group.get('groupName');
+                  final String admin = group.get('admin');
+                  final bool isJoined = joinedGroups[groupId] ?? false;
+
                   return groupTile(
                     userName,
-                    group.get('groupId'),
-                    group.get('groupName'),
-                    group.get('admin'),
+                    groupId,
+                    groupName,
+                    admin,
+                    isJoined,
                   );
                 },
               )
-            // ignore: avoid_unnecessary_containers
             : Container(
                 child: const Center(
                   heightFactor: 20,
@@ -197,19 +183,18 @@ initiateSearchMethod() async {
   }
 
   joinedOrNot(
-      String userName, String groupId, String groupname, String admin) async {
+      String userName, String groupId, String groupName, String admin) async {
     await DatabaseServices(uid: user!.uid)
-        .isUserJoined(groupname, groupId, userName)
+        .isUserJoined(groupName, groupId, userName)
         .then((value) {
       setState(() {
-        isJoined = value;
+        joinedGroups[groupId] = value;
       });
     });
   }
 
-  Widget groupTile(
-      String userName, String groupId, String groupName, String admin) {
-    // function to check whether user already exists in group
+  Widget groupTile(String userName, String groupId, String groupName,
+      String admin, bool isJoined) {
     joinedOrNot(userName, groupId, groupName, admin);
     return ListTile(
       contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -228,23 +213,26 @@ initiateSearchMethod() async {
         onTap: () async {
           await DatabaseServices(uid: user!.uid)
               .toggleGroupJoin(groupId, userName, groupName);
-          if (isJoined) {
+          setState(() {
+            joinedGroups[groupId] = !isJoined;
+          });
+          if (!isJoined) {
             setState(() {
-              isJoined = !isJoined;
+              showSnackbar(
+                  context, Colors.green, "Successfully joined the group");
             });
-            // ignore: use_build_context_synchronously
-            showSnackbar(context, Colors.green, "Successfully joined the group");
             Future.delayed(const Duration(seconds: 2), () {
               nextScreen(
-                  context,
-                  ChatPage(
-                      groupId: groupId,
-                      groupName: groupName,
-                      userName: userName));
+                context,
+                ChatPage(
+                  groupId: groupId,
+                  groupName: groupName,
+                  userName: userName,
+                ),
+              );
             });
           } else {
             setState(() {
-              isJoined = !isJoined;
               showSnackbar(context, Colors.red, "Left the group $groupName");
             });
           }
@@ -270,8 +258,10 @@ initiateSearchMethod() async {
                 ),
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                child: const Text("Join Now",
-                    style: TextStyle(color: Colors.white)),
+                child: const Text(
+                  "Join Now",
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
       ),
     );
