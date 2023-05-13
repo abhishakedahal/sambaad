@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:sambaad/pages/group_info.dart';
@@ -455,12 +456,78 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
                                               onPressed: () {
                                                 Navigator.of(context).pop();
 
-                                                setState(() {
-                                                  messageText = snapshot
-                                                              .data.docs[index]
-                                                          ['translatedfield']
-                                                      [selectedLanguageCode];
-                                                });
+                                                showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return Center(
+                                                      child:
+                                                          SingleChildScrollView(
+                                                        child: AlertDialog(
+                                                          title: Text(
+                                                            'Message from ${snapshot.data.docs[index]['sender']}',
+                                                            style:
+                                                                const TextStyle(
+                                                              fontSize: 16,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                            ),
+                                                          ),
+                                                          content: Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Text(
+                                                                snapshot.data.docs[
+                                                                            index]
+                                                                        [
+                                                                        'translatedfield']
+                                                                    [
+                                                                    selectedLanguageCode],
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .start,
+                                                                style:
+                                                                    const TextStyle(
+                                                                  fontSize: 16,
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontStyle:
+                                                                      FontStyle
+                                                                          .italic,
+                                                                ),
+                                                              ),
+                                                              const SizedBox(
+                                                                  height: 10),
+                                                              Text(
+                                                                'Sent at: ${DateFormat.yMMMd().format(DateTime.fromMillisecondsSinceEpoch(snapshot.data.docs[index]['time']))}',
+                                                                style:
+                                                                    const TextStyle(
+                                                                  fontSize: 12,
+                                                                  color: Colors
+                                                                      .black54,
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          actions: [
+                                                            TextButton(
+                                                              onPressed: () {
+                                                                Navigator.of(
+                                                                        context)
+                                                                    .pop();
+                                                              },
+                                                              child: const Text(
+                                                                  'OK'),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
+                                                );
                                               },
                                               child: const Text('Yes'),
                                             ),
@@ -475,12 +542,15 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
                                       },
                                     );
                                   },
-                                  child: Text(messageText,
-                                      textAlign: TextAlign.start,
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 16,
-                                          fontStyle: FontStyle.italic)),
+                                  child: Text(
+                                    messageText,
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontStyle: FontStyle.italic,
+                                    ),
+                                  ),
                                 ),
                                 sender: snapshot.data.docs[index]['sender'],
                                 sentByMe: widget.userName ==
