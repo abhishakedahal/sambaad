@@ -6,6 +6,7 @@ import 'package:sambaad/pages/profile_page.dart';
 // import 'package:sambaad/pages/search_page.dart';
 import 'package:sambaad/services/auth_services.dart';
 import 'package:sambaad/pages/boyer_moore_group_search.dart';
+import 'package:sambaad/pages/search_page.dart';
 import 'package:sambaad/services/database_services.dart';
 import 'package:sambaad/widgets/group_title.dart';
 import 'package:sambaad/widgets/widgets.dart';
@@ -68,18 +69,43 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       //body: Center(child: Text("Home Page")),
       appBar: AppBar(      
-        actions: [          
-          IconButton(
-              onPressed: () {
-                nextScreen(context, const BMSearchPage());
+        actions: [
+        IconButton(
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: Text("Search Options"),
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      ListTile(
+                        onTap: () {
+                          Navigator.pop(context);
+                          nextScreen(context, SearchPage());
+                        },
+                        title: Text("Normal Search"),
+                      ),
+                      ListTile(
+                        onTap: () {
+                          Navigator.pop(context);
+                          nextScreen(context, BMSearchPage());
+                        },
+                        title: Text("Boyer Moore Search"),
+                      ),
+                    ],
+                  ),
+                );
               },
-              icon: const Icon(
-               Icons.search,
-                size: 30,
-              )
-              )
-              
-        ],
+            );
+          },
+          icon: Icon(
+            Icons.search,
+            size: 30,
+          ),
+        )
+      ],
         elevation: 0,
         backgroundColor: Color(0xFF3A98B9), toolbarHeight: 60,
         centerTitle: true, 

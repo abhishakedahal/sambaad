@@ -52,7 +52,7 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
   bool isEncryptionEnabled = false;
   bool isProfanityFilterEnabled = false;
   String messageText =
-      "🔞This message contains potentially offensive content. Disable profanity filter to view it 🔞";
+      "🔞This message contains potentially offensive content. Long press to view details.";
   late AnimationController _controller;
 
   @override
@@ -205,7 +205,7 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
                     title: const Text("🔒 Encryption"),
                     content: Text(isEncryptionEnabled
                         ? "⚠️ Do you want to disable end-to-end encryption?"
-                        : "Enabling end-to-end encryption will disable the translation functionality."),
+                        : "You are turning on end to end encryption. This application uses AES algorithm with 128 bit key. The key used is JaNdRgUkXp2s5v8y. The key is stored in your device and is not shared with anyone. Do you want to continue?"),
                     actions: [
                       ElevatedButton(
                         child: const Text("No"),
@@ -326,12 +326,30 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
                   if (isEncryptionEnabled) {
                     try {
                       return MessageTile(
-                        message: Text(
-                            AESEncryption.decryptAES(
-                                snapshot.data.docs[index]['message']),
-                            textAlign: TextAlign.start,
-                            style: const TextStyle(
-                                color: Colors.white, fontSize: 16)),
+                        message: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "The encrypted message is:" + snapshot.data.docs[index]['message'],
+                              textAlign: TextAlign.start,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                              ),
+                            ),
+                            const SizedBox(height: 5),
+                            Text(
+                              "The decrypted message is:" +
+                              AESEncryption.decryptAES(
+                                  snapshot.data.docs[index]['message']),
+                              textAlign: TextAlign.start,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ],
+                        ),
                         sender: snapshot.data.docs[index]['sender'],
                         sentByMe: widget.userName ==
                             snapshot.data.docs[index]['sender'],
@@ -464,15 +482,10 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
                                                       child:
                                                           SingleChildScrollView(
                                                         child: AlertDialog(
-                                                          title: Text(
-                                                            'Message from ${snapshot.data.docs[index]['sender']}',
-                                                            style:
-                                                                const TextStyle(
-                                                              fontSize: 16,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                            ),
+                                                          title: Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
                                                           ),
                                                           content: Column(
                                                             crossAxisAlignment:
@@ -497,6 +510,16 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
                                                                   fontStyle:
                                                                       FontStyle
                                                                           .italic,
+                                                                ),
+                                                              ),
+                                                              Text(
+                                                                'Profanity score is ${snapshot.data.docs[index]['attribute_scores']['PROFANITY']}. It must be less than 0.6',
+                                                                style:
+                                                                    const TextStyle(
+                                                                  fontSize: 16,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
                                                                 ),
                                                               ),
                                                               const SizedBox(

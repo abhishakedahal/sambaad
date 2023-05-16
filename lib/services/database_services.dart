@@ -91,9 +91,22 @@ class DatabaseServices {
   }
 
   // search
+  // searchByName(String groupName) {
+  //   return groupCollection.where("groupName", isEqualTo: groupName).get();
+  // }
+
   searchByName(String groupName) {
-    return groupCollection.where("groupName", isEqualTo: groupName).get();
-  }
+  return groupCollection.where("groupName", isGreaterThanOrEqualTo: groupName)
+                       .where("groupName", isLessThan: groupName + "\uf8ff")
+                       .get();
+}
+
+
+// searchByName(String groupName) {
+//   return groupCollection.where("groupName", "matches", ".*" + groupName + ".*").get();
+// }
+
+
 
    //Search group using Boyer Moore Algorithm
   // ignore: non_constant_identifier_names
