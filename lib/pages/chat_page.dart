@@ -205,7 +205,7 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
                     title: const Text("🔒 Encryption"),
                     content: Text(isEncryptionEnabled
                         ? "⚠️ Do you want to disable end-to-end encryption?"
-                        : "You are turning on end to end encryption. This application uses AES algorithm with 128 bit key. The key used is JaNdRgUkXp2s5v8y. The key is stored in your device and is not shared with anyone. Do you want to continue?"),
+                        : "You are turning on end to end encryption.\nThis application uses AES algorithm with 128 bit key. The key used is JaNdRgUkXp2s5v8y. The key is stored in your device and is not shared with anyone.\n\nDo you want to continue?"),
                     actions: [
                       ElevatedButton(
                         child: const Text("No"),
@@ -330,7 +330,8 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "The encrypted message is:" + snapshot.data.docs[index]['message'],
+                              "The encrypted message is:" +
+                                  snapshot.data.docs[index]['message'],
                               textAlign: TextAlign.start,
                               style: const TextStyle(
                                 color: Colors.white,
@@ -340,8 +341,8 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
                             const SizedBox(height: 5),
                             Text(
                               "The decrypted message is:" +
-                              AESEncryption.decryptAES(
-                                  snapshot.data.docs[index]['message']),
+                                  AESEncryption.decryptAES(
+                                      snapshot.data.docs[index]['message']),
                               textAlign: TextAlign.start,
                               style: const TextStyle(
                                 color: Colors.white,
@@ -493,7 +494,7 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
                                                                     .start,
                                                             children: [
                                                               Text(
-                                                                snapshot.data.docs[
+                                                                "Message: "+snapshot.data.docs[
                                                                             index]
                                                                         [
                                                                         'translatedfield']
@@ -507,19 +508,21 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
                                                                   fontSize: 16,
                                                                   color: Colors
                                                                       .black,
-                                                                  fontStyle:
-                                                                      FontStyle
-                                                                          .italic,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
                                                                 ),
                                                               ),
+                                                              const SizedBox(
+                                                                  height: 10),
                                                               Text(
                                                                 'Profanity score is ${snapshot.data.docs[index]['attribute_scores']['PROFANITY']}. It must be less than 0.6',
                                                                 style:
                                                                     const TextStyle(
                                                                   fontSize: 16,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
+                                                                  fontStyle:
+                                                                      FontStyle
+                                                                          .italic,
                                                                 ),
                                                               ),
                                                               const SizedBox(

@@ -75,8 +75,8 @@ class _HomePageState extends State<HomePage> {
             showDialog(
               context: context,
               builder: (context) {
-                return AlertDialog(
-                  title: Text("Search Options"),
+                return AlertDialog(                
+                  title: Text("Search Options",),
                   content: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [

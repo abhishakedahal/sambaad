@@ -50,7 +50,7 @@ class _SearchPageState extends State<SearchPage> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: Color(0xFF3A98B9),
         title: const Text(
           "Search",
           style: TextStyle(
@@ -60,12 +60,16 @@ class _SearchPageState extends State<SearchPage> {
       body: Column(
         children: [
           Container(
-            color: Theme.of(context).primaryColor,
+            color: Color(0xFF3A98B9),
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
             child: Row(
               children: [
                 Expanded(
                   child: TextField(
+                    textInputAction: TextInputAction.search,
+                    onSubmitted: (value) {
+                      initiateSearchMethod();
+                    },
                     controller: searchController,
                     style: const TextStyle(color: Colors.white),
                     decoration: const InputDecoration(
@@ -158,7 +162,7 @@ class _SearchPageState extends State<SearchPage> {
       contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       leading: CircleAvatar(
         radius: 30,
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: Color(0xFF3A98B9),
         child: Text(
           groupName.substring(0, 1).toUpperCase(),
           style: const TextStyle(color: Colors.white),
@@ -176,7 +180,8 @@ class _SearchPageState extends State<SearchPage> {
               isJoined = !isJoined;
             });
             // ignore: use_build_context_synchronously
-            showSnackbar(context, Colors.green, "Successfully joined the group");
+            showSnackbar(
+                context, Colors.green, "Successfully joined the group");
             Future.delayed(const Duration(seconds: 2), () {
               nextScreen(
                   context,
@@ -209,7 +214,7 @@ class _SearchPageState extends State<SearchPage> {
             : Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  color: Theme.of(context).primaryColor,
+                  color: Color(0xFF3A98B9),
                 ),
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
